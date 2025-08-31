@@ -3,11 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { AccountActivationService } from './account-activation.service';
 import { ActivationState } from './account-activation.state';
 import { CommonModule } from '@angular/common';
+import {MatIconModule} from '@angular/material/icon'
 
 
 @Component({
   selector: 'app-account-activation',
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule],
   templateUrl: './account-activation.html',
 })
 export class AccountActivation implements OnInit {
