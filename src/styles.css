@@ -1,5 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+
+@layer utilities {
+	.animate-fade-in {
+		animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	@keyframes fadeIn {
+		from {
+			opacity: 0;
+			transform: translateY(30px);
+		}
+		to {
+			opacity: 1;
+			transform: translateY(0);
+		}
+	}
+}
 @theme {
 	--color-primary-light: #8F4C35;
 	--color-on-primary-light: #FFFFFF;
