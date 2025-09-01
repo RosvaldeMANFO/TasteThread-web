@@ -1,40 +1,90 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationState } from './authentication.state';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { RequestResult } from '../../core/model/requestResult.model';
+import { Login } from '../../core/model/login.model';
+
 
 @Component({
   selector: 'app-authentication',
-  imports: [CommonModule],
+  imports: [CommonModule, MatIconModule, FormsModule],
   templateUrl: './authentication.html',
 })
-export class Authentication {
-
+export class Authentication implements OnInit {
   state: AuthenticationState = {
     user: {
       email: '',
       password: ''
     },
+    rememberMe: false,
     loading: false,
-    next: null,
-    error: null
   }
   showPassword = false;
 
-  constructor(private authService: AuthenticationService
-  ) {
+  constructor(
+    private router: Router,
+    private snackBar: MatSnackBar,
+    private authService: AuthenticationService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) { }
 
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      const storedUser = localStorage.getItem('user');
+      if (storedUser) {
+        this.state.user = JSON.parse(storedUser);
+        this.state.rememberMe = true;
+      }
+    }
   }
 
-  emailChange(email: string) {
-    Object.assign(this.state.user, { email });
-  }
-  
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  passwordChange(password: string) {
-    Object.assign(this.state.user, { password });
+  login(event: Event) {
+    event.preventDefault();
+    this.state.loading = true;
+    this.authService.login({
+      email: this.state.user.email,
+      password: this.state.user.password
+    })
+      .subscribe({
+        next: (response) => {
+          this.state.loading = false;
+          if (response.error) {
+            this.snackBar.open(response.error, 'Close', {
+              duration: 3000,
+            });
+          } else {
+            if (this.state.rememberMe) {
+              localStorage.setItem('user', JSON.stringify(this.state.user));
+            }
+            if (response.data?.nextLink) {
+              sessionStorage.setItem('token', JSON.stringify(response.data?.token));
+              sessionStorage.setItem('nextLink', response.data.nextLink);
+            }
+            this.handleRouting(response.data?.nextLink);
+          }
+        },
+        error: (result: RequestResult<Login>) => {
+          this.state.loading = false;
+          this.snackBar.open(result.error || 'An error occurred', 'Close', {
+            duration: 3000,
+          });
+        }
+      });
+  }
+
+  handleRouting(nextLink?: string) {
+    const route = nextLink ? [nextLink] : ['/landing-page'];
+    this.router.navigate(route, { replaceUrl: true });
   }
 }
+
+
