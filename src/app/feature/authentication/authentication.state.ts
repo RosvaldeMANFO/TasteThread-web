@@ -3,11 +3,6 @@ export type AuthenticationState = {
     email: string;
     password: string;
   };
-  tokens?: {
-    access: string;
-    refresh: string;
-  };
+  rememberMe: boolean;
   loading: boolean;
-  next: string | null;
-  error: string | null;
 };

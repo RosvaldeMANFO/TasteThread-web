@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../../environments/environment";
-import { Login } from "../../core/model/login.model";
+import { Login, LoginDTO } from "../../core/model/login.model";
 import { RequestResult } from "../../core/model/requestResult.model";
 import { Injectable } from "@angular/core";
 
@@ -12,9 +12,14 @@ export class AuthenticationService {
         this.apiUrl = environment.apiUrl;
     }
 
-    login(email: string, password: string) {
+    login(dto: LoginDTO) {
         return this.http.post<RequestResult<Login>>(
-            `${this.apiUrl}/auth/login`, { email, password }
+            `${this.apiUrl}/auth/login`, dto,
+            {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            }
         );
     }
 }
