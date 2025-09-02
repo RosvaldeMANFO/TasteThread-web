@@ -4,12 +4,12 @@ import { accountActivationGuard } from './core/account-activation-guard';
 import { Authentication } from './feature/authentication/authentication';
 import { Dashboard } from './feature/dashboard/dashboard';
 import { LandingPage } from './feature/landing-page/landing-page';
-import { App } from './app';
 
 export const routes: Routes = [
     {
         path: '',
-        component: App
+        redirectTo: 'landing',
+        pathMatch: 'full'
     },
     {
         path: 'auth',
