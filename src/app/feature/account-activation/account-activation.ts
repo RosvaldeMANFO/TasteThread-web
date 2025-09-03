@@ -35,7 +35,7 @@ export class AccountActivation implements OnInit {
         error: (err) => {
           this.state = {
             success: false,
-            message: err.error?.message || 'Account activation failed.'
+            message: err.error?.message
           };
         }
       });

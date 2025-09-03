@@ -3,11 +3,8 @@ import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationState } from './authentication.state';
 import { MatIconModule } from '@angular/material/icon';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { RequestResult } from '../../core/model/requestResult.model';
-import { Login } from '../../core/model/login.model';
 
 
 @Component({
@@ -28,7 +25,6 @@ export class Authentication implements OnInit {
 
   constructor(
     private router: Router,
-    private snackBar: MatSnackBar,
     private authService: AuthenticationService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
@@ -47,8 +43,10 @@ export class Authentication implements OnInit {
     this.showPassword = !this.showPassword;
   }
 
-  login(event: Event) {
-    event.preventDefault();
+  login(form: NgForm) {
+    if (!form.valid) {
+      return;
+    }
     this.state.loading = true;
     this.authService.login({
       email: this.state.user.email,
@@ -57,12 +55,7 @@ export class Authentication implements OnInit {
       .subscribe({
         next: (response) => {
           this.state.loading = false;
-          if (response.error) {
-            this.snackBar.open(response.error, 'Close', {
-              duration: 3000,
-            });
-          } else {
-            if (this.state.rememberMe) {
+          if (this.state.rememberMe) {
               localStorage.setItem('user', JSON.stringify(this.state.user));
             }
             if (response.data?.nextLink) {
@@ -70,13 +63,14 @@ export class Authentication implements OnInit {
               sessionStorage.setItem('nextLink', response.data.nextLink);
             }
             this.handleRouting(response.data?.nextLink);
-          }
         },
-        error: (result: RequestResult<Login>) => {
-          this.state.loading = false;
-          this.snackBar.open(result.error || 'An error occurred', 'Close', {
-            duration: 3000,
-          });
+        error: (result) => {
+          this.state = {
+            ...this.state,
+            loading: false,
+            message: result.error?.message,
+            success: false
+          };
         }
       });
   }

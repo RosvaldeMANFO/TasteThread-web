@@ -5,4 +5,6 @@ export type AuthenticationState = {
   };
   rememberMe: boolean;
   loading: boolean;
+  message?: string;
+  success?: boolean;
 };
