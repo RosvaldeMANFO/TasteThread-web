@@ -1,7 +1,7 @@
 export interface RequestResult<T> {
 	status: string;
 	data?: T | null;
-	error?: string | null;
+	message?: string | null;
 	httpStatus: number;
 }
 

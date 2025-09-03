@@ -26,7 +26,8 @@ export class Dashboard implements OnInit {
     menuItems: [
       { name: 'Feed', route: '/feed', icon: 'feed' },
       { name: 'Pending feed', route: '/pending-feed', icon: 'hourglass_top' },
-      { name: 'users', route: '/users', icon: 'people' },
+      { name: 'Users', route: '/users', icon: 'people' },
+      { name: "Log out", route: "/logout", icon: "logout" }
     ],
     activeRoute: '/feed',
   };

@@ -4,6 +4,7 @@ import { accountActivationGuard } from './core/account-activation-guard';
 import { Authentication } from './feature/authentication/authentication';
 import { Dashboard } from './feature/dashboard/dashboard';
 import { LandingPage } from './feature/landing-page/landing-page';
+import { ResetPassword } from './feature/reset-password/reset-password';
 
 export const routes: Routes = [
     {
@@ -27,5 +28,9 @@ export const routes: Routes = [
         path: 'activate',
         component: AccountActivation,
         canActivate: [accountActivationGuard]
+    },
+    {
+        path: 'reset-password',
+        component: ResetPassword
     }
 ];
