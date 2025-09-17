@@ -48,3 +48,4 @@ jobs:
             service: ${{ env.REPOSITORY }}-web
             region: ${{ env.REGION }}
             image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/web:${{ github.sha }}
+            allow_unauthenticated: true
