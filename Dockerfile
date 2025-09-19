@@ -1,16 +1,25 @@
 FROM node:20-alpine AS build
+
 WORKDIR /app
 
-COPY package*.json ./
+COPY package.json ./
 
-RUN if [ -f package-lock.json ]; then npm ci --omit=dev=false; else npm install; fi
+RUN npm install
 
 COPY . .
 
 RUN npm run build:prod
 
-FROM nginx:1.27-alpine
-EXPOSE 8080
+RUN if [ -f /app/dist/cook/browser/index.csr.html ]; then mv /app/dist/cook/browser/index.csr.html /app/dist/cook/browser/index.html; fi
+
+FROM nginx:alpine
+
+RUN rm -rf /usr/share/nginx/html/*
+
+COPY --from=build /app/dist/cook/browser /usr/share/nginx/html
 
 COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist/cook/browser /usr/share/nginx/html
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
