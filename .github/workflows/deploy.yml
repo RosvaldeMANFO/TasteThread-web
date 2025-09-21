@@ -9,6 +9,7 @@ env:
   PROJECT_ID: ${{ vars.PROJECT_ID }}
   REPOSITORY: ${{ vars.REPOSITORY }}
   REGION: ${{ vars.REGION }}
+  REGION_DOMAIN_MAPPING: ${{ vars.REGION_DOMAIN_MAPPING }}
 
 jobs:
   deploy:
@@ -48,6 +49,5 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
             service: ${{ env.REPOSITORY }}-web
-            region: ${{ env.REGION }}
+            region: ${{ env.REGION_DOMAIN_MAPPING }}
             image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/web:${{ github.sha }}
-            flags: '--allow-unauthenticated'
