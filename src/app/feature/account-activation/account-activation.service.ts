@@ -10,8 +10,7 @@ export class AccountActivationService {
         return this.http.post(`${environment.apiUrl}/users/activate`, null, {
             headers: {
                 'Authorization': `Bearer ${token}`,
-            },
-            withCredentials: true,
+            }
         });
     }
 }
