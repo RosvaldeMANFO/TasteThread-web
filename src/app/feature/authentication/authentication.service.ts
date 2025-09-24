@@ -18,7 +18,8 @@ export class AuthenticationService {
             {
                 headers: {
                     'Content-Type': 'application/json'
-                }
+                },
+                withCredentials: true,
             }
         );
     }
