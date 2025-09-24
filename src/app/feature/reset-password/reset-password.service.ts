@@ -19,7 +19,6 @@ export class ResetPasswordService {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
-                withCredentials: true,
             }
         );
     }
