@@ -9,7 +9,8 @@ env:
   PROJECT_ID: ${{ vars.PROJECT_ID }}
   REPOSITORY: ${{ vars.REPOSITORY }}
   REGION: ${{ vars.REGION }}
-  REGION_DOMAIN_MAPPING: ${{ vars.REGION_DOMAIN_MAPPING }}
+  WEB_SERVICE_REGION: ${{ vars.WEB_SERVICE_REGION }}
+  API_HOST: ${{ vars.API_HOST }}
 
 jobs:
   deploy:
@@ -25,9 +26,17 @@ jobs:
       - name: Create production env file
         run: |
           mkdir -p src/environments
-          cat > src/environments/production.ts << 'EOF'
-          ${{ vars.ENV }}
-          EOF
+          printf '%s\n' "${{ vars.ENV }}" > src/environments/production.ts
+
+      - name: Render nginx.conf from template
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gettext-base
+          envsubst '${API_HOST}' < nginx.conf.template > nginx.conf
+
+      - name: Check the nginx configuration
+        run: |
+          cat nginx.conf
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
@@ -49,5 +58,5 @@ jobs:
         uses: google-github-actions/deploy-cloudrun@v2
         with:
             service: ${{ env.REPOSITORY }}-web
-            region: ${{ env.REGION_DOMAIN_MAPPING }}
+            region: ${{ env.WEB_SERVICE_REGION }}
             image: ${{ env.REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/web:${{ github.sha }}
