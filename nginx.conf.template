@@ -1,0 +1,57 @@
+worker_processes 1;
+
+events {}
+
+http {
+  include /etc/nginx/mime.types;
+  sendfile on;
+
+  map $http_origin $cors_origin {
+    default $http_origin;
+  }
+
+  server {
+    listen 8080;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    location ~* \.(?:js|css|mjs|woff2?|svg|png|jpe?g|webp|ico)$ {
+      add_header Cache-Control "public,max-age=31536000,immutable";
+      try_files $uri =404;
+    }
+
+    location = /index.html {
+      add_header Cache-Control "no-store";
+    }
+
+    location ^~ /api/ {
+      if ($request_method = OPTIONS) {
+          add_header Access-Control-Allow-Origin $cors_origin always;
+          add_header Vary "Origin" always;
+          add_header Access-Control-Allow-Methods "GET,POST,PUT,PATCH,DELETE,OPTIONS" always;
+          add_header Access-Control-Allow-Headers "Content-Type,Authorization,X-Requested-With" always;
+          add_header Access-Control-Max-Age 86400 always;
+          add_header Content-Length 0;
+          return 204;
+      }
+      proxy_pass https://${API_HOST};
+      proxy_set_header Host ${API_HOST};
+      proxy_set_header X-Real-IP $remote_addr;
+      proxy_set_header X-Forwarded-Proto $scheme;
+      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+      proxy_set_header X-Forwarded-Host $host;
+
+      proxy_ssl_verify off;
+      proxy_ssl_server_name on;
+
+      add_header Access-Control-Allow-Origin $cors_origin always;
+      add_header Vary "Origin" always;
+      add_header Access-Control-Allow-Methods "GET,POST,PUT,PATCH,DELETE,OPTIONS" always;
+      add_header Access-Control-Allow-Headers "Content-Type,Authorization,X-Requested-With" always;
+    }
+
+    location / {
+      try_files $uri $uri/ /index.html;
+    }
+  }
+}
