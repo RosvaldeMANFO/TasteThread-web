@@ -16,6 +16,7 @@
 		}
 	}
 }
+
 @theme {
 	--color-primary-light: #8F4C35;
 	--color-on-primary-light: #FFFFFF;
@@ -87,4 +88,9 @@
 	--color-surface-container-dark: #271D1B;
 	--color-surface-container-high-dark: #322825;
 	--color-surface-container-highest-dark: #3D322F;
+}
+
+.mdc-notched-outline__notch
+{
+  border-right: none;
 }

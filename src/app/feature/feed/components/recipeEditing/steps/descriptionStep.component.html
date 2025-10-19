@@ -1,0 +1,18 @@
+<form [formGroup]="form" class="grid gap-4">
+  <mat-form-field appearance="outline">
+    <mat-label>Recipe name</mat-label>
+    <input matInput formControlName="name" required />
+  </mat-form-field>
+
+  <app-select-field
+    label="Origin"
+    [options]="origins"
+    formControlName="origin">
+  </app-select-field>
+
+  <app-select-field
+    label="Meal type"
+    [options]="mealTypes"
+    formControlName="mealType">
+  </app-select-field>
+</form>
