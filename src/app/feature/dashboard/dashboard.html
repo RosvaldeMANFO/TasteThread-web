@@ -27,6 +27,11 @@
             </ul>
         </mat-sidenav>
         <mat-sidenav-content>
+            @switch (state.activeRoute) {
+                @case ('/feed') {
+                    <app-feed></app-feed>
+                }
+            }
         </mat-sidenav-content>
     </mat-sidenav-container>
 </div>
