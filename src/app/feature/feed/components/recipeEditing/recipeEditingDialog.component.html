@@ -1,0 +1,56 @@
+<h2 mat-dialog-title class="text-lg font-semibold">Create recipe</h2>
+
+<mat-dialog-content class="block max-h-[75vh] overflow-y-auto">
+  <mat-horizontal-stepper #stepper [linear]="true" class="w-full">
+    <mat-step [stepControl]="descriptionForm" label="Description">
+      <app-description-step [form]="descriptionForm">
+      </app-description-step>
+      <div class="mt-4 flex justify-end gap-2">
+        <button mat-stroked-button color="primary" (click)="stepper.next()"
+          [disabled]="descriptionForm.invalid">Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="additionalForm" label="Additional info">
+      <app-additional-info-step [form]="additionalForm">
+      </app-additional-info-step>
+      <div class="mt-4 flex justify-between">
+        <button mat-button (click)="stepper.previous()">Back</button>
+        <button mat-stroked-button color="primary" (click)="stepper.next()">Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="ingredientsForm" label="Ingredients">
+      <app-ingredients-step [items]="items" (add)="addIngredient()" (remove)="removeIngredient($event)">
+      </app-ingredients-step>
+      <div class="mt-4 flex justify-between">
+        <button mat-button (click)="stepper.previous()">Back</button>
+        <button mat-stroked-button color="primary" (click)="stepper.next()">Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="stepsForm" label="Steps">
+      <app-cooking-step [items]="stepItems" (add)="addStep()" (remove)="removeStep($event)">
+      </app-cooking-step>
+      <div class="mt-4 flex justify-between">
+        <button mat-button (click)="stepper.previous()">Back</button>
+        <button mat-stroked-button color="primary" (click)="stepper.next()">Next</button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="photoForm" label="Photo">
+      <app-photo-step [preview]="photoPreview" (change)="onPhotoSelected($event.file, $event.preview)">
+      </app-photo-step>
+      <div class="mt-4 flex justify-between">
+        <button mat-button (click)="stepper.previous()">Back</button>
+        <button mat-flat-button class="bg-blue-600 hover:bg-blue-700 text-white" (click)="save()">
+          <mat-icon class="mr-1">save</mat-icon> Save
+        </button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="sticky bottom-0 bg-white dark:bg-neutral-900 py-3 border-t mt-2">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

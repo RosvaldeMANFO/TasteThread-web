@@ -1,0 +1,20 @@
+<mat-form-field [appearance]="'outline'" [class]="" class="w-full">
+  @if (label) {
+    <mat-label>{{ label }}</mat-label>
+  }
+  <mat-select
+    [value]="value"
+    (selectionChange)="onSelect($event.value)"
+    [required]="required"
+    [multiple]="multiple"
+    [panelClass]="''"
+    [disabled]="disabled"
+  >
+    @for (opt of options; track opt.value) {
+      <mat-option [value]="opt.value">{{ opt.label }}</mat-option>
+    }
+  </mat-select>
+  @if (hint) {
+    <mat-hint>{{ hint }}</mat-hint>
+  }
+</mat-form-field>
