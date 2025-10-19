@@ -6,10 +6,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { DashboardState } from './dashboard.state';
+import { Feed } from "../feed/feed";
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule, MatToolbarModule],
+  imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule, MatToolbarModule, Feed],
   templateUrl: './dashboard.html',
   styleUrls: ['./style.css'],
 })
