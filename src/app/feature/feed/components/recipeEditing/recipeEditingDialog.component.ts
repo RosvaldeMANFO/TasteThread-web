@@ -11,6 +11,8 @@ import { AdditionalInfoStepComponent } from './steps/additionalInfoStep.componen
 import { IngredientsStepComponent } from './steps/ingredientsStep.component';
 import { CookingStepComponent } from './steps/cookingStep.component';
 import { PhotoStepComponent } from './steps/photoStep.component';
+import { IngredientDTO } from '../../../../core/model/recipe/ingredient.dto';
+import { RecipeDTO } from '../../../../core/model/recipe/recipe.dto';
 export interface RecipeEditingDialogData { recipe?: any; }
 
 @Component({
@@ -75,20 +77,21 @@ export class RecipeEditingDialogComponent {
   }
 
   save() {
-    const payload = {
-      name: this.descriptionForm.value.name,
-      origin: this.descriptionForm.value.origin,
-      mealType: this.descriptionForm.value.mealType,
-      description: this.additionalForm.value.description,
-      dietaryRestrictions: this.additionalForm.value.dietaryRestrictions,
-      servings: this.additionalForm.value.servings,
-      cookTime: this.additionalForm.value.cookTime,
-      ingredients: this.items.value,
-      steps: this.stepItems.value,
-      image: this.photoForm.value.image,
-    };
-    this.ref.close(payload);
+    const dto = new RecipeDTO({
+      name: this.descriptionForm.value.name ?? '',
+      origin: this.descriptionForm.value.origin ?? '',
+      mealType: this.descriptionForm.value.mealType ?? '',
+      description: this.additionalForm.value.description ?? '',
+      dietaryRestrictions: this.additionalForm.value.dietaryRestrictions ?? [],
+      servings: this.additionalForm.value.servings ?? 0,
+      cookTime: this.additionalForm.value.cookTime ?? 0,
+      ingredients: (this.items.value ?? []).map(i => IngredientDTO.fromJSON(i)),
+      instructions: this.stepItems.value ?? [],
+      image: this.photoForm.value.image ?? null,
+    });
+    this.ref.close(dto);
   }
+  
   close() { this.ref.close(); }
 
   private prefill(recipe: any) {
