@@ -5,5 +5,5 @@ export class FeedListState {
     feeds: Feed[] = [];
     error: string | null = null;
     openRecipeEditingDialog: boolean = false;
-    selectedRecipe: Feed | null = null;
+    selectedFeed: Feed | null = null;
 }
