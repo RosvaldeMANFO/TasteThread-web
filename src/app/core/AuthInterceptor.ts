@@ -66,7 +66,6 @@ export class AuthInterceptor implements HttpInterceptor {
 
   refreshToken(): Observable<Token> {
         const token: Token = JSON.parse(sessionStorage.getItem('token') || '{}');
-        console.log(token);
         return this.http.post<RequestResult<Token>>(
             `${environment.apiUrl}/auth/refresh`,
             token.refreshToken,
