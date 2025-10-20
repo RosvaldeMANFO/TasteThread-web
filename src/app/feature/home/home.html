@@ -1,1 +1,13 @@
-<p>home works!</p>
+<div class="p-4 flex flex-col gap-7">
+    <app-header [stats]="state.stats" [isLoading]="state.isLoading"></app-header>
+    <div class="min-w-sm flex flex-wrap w-full">
+        <div class="w-1/2 flex flex-col gap-4">
+            <h3 class="text-primary-light font-bold">Recipe List</h3>
+            <div class="card shadow-md w-full rounded-md p-2 h-full">
+                <app-recipe-list [state]="state.recipeListState" (loadMore)="loadMoreRecipes()"
+                    (search)="searchRecipes($event)" (loadMoreSearches)="loadMoreSearchResults()"
+                    (refresh)="refreshRecipes()"></app-recipe-list>
+            </div>
+        </div>
+    </div>
+</div>
