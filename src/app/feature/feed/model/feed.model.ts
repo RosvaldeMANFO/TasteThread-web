@@ -11,6 +11,8 @@ export class Feed {
   authorImageUrl?: string | null = null;
   isFavorite: boolean = false;
   isLiked: boolean = false;
+  canEdit: boolean = false;
+
 
   constructor(data?: Partial<Feed>) {
     if (data) {
@@ -29,6 +31,7 @@ export class Feed {
       authorImageUrl: json.authorImageUrl ?? null,
       isFavorite: json.isFavorite ?? false,
       isLiked: json.isLiked ?? false,
+      canEdit: json.canEdit ?? false,
     });
   }
 
@@ -43,6 +46,7 @@ export class Feed {
       authorImageUrl: this.authorImageUrl,
       isFavorite: this.isFavorite,
       isLiked: this.isLiked,
+      canEdit: this.canEdit,
     };
   }
 }

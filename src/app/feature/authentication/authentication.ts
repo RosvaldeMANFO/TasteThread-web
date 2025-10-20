@@ -55,14 +55,15 @@ export class Authentication implements OnInit {
       .subscribe({
         next: (response) => {
           this.state.loading = false;
+          sessionStorage.setItem('userEmail', this.state.user.email);
           if (this.state.rememberMe) {
-              localStorage.setItem('user', JSON.stringify(this.state.user));
-            }
-            if (response.data?.nextLink) {
-              sessionStorage.setItem('token', JSON.stringify(response.data?.token));
-              sessionStorage.setItem('nextLink', response.data.nextLink);
-            }
-            this.handleRouting(response.data?.nextLink);
+            localStorage.setItem('user', JSON.stringify(this.state.user));
+          }
+          if (response.data?.nextLink) {
+            sessionStorage.setItem('token', JSON.stringify(response.data?.token));
+            sessionStorage.setItem('nextLink', response.data.nextLink);
+          }
+          this.handleRouting(response.data?.nextLink);
         },
         error: (result) => {
           this.state = {
