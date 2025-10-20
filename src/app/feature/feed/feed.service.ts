@@ -24,9 +24,10 @@ export class FeedService {
         ).pipe(
             map(
                 res => (res.data ?? [])
-                    .map(recipe => recipeModelToFeed(
-                        recipe, null, false
-                    ))
+                    .map(recipe => {
+                        const credential = sessionStorage.getItem("userEmail") || "";
+                        return recipeModelToFeed(recipe, credential, false);
+                    })
             )
         );
     }

@@ -1,0 +1,18 @@
+<div class="p-7">
+    @if(state.isLoading) {
+    <p>Loading feed...</p>
+    } @else if (state.error) {
+    <p class="text-red-500">Error: {{ state.error }}</p>
+    } @else {
+    <div class="mb-4 text-gray-600">Total recipes: {{ state.feeds.length }}</div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        @for(feed of state.feeds; track feed.id) {
+        <app-feed-card [feed]="feed" (cardClick)="onFeedCardClick($event)"></app-feed-card>
+        }
+    </div>
+    }
+    <button mat-fab color="primary" class="fixed bottom-4 right-4 bg-inverse-primary-light 
+   rounded-xl flex items-center justify-center p-2 text-primary-light" (click)="openRecipeEditingDialog()">
+        <mat-icon>add</mat-icon>
+    </button>
+</div>

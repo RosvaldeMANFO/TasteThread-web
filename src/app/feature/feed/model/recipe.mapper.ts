@@ -13,7 +13,7 @@ import { longToLocalDateTime } from "../../../utils/datetime.util";
 
 export function recipeModelToFeed(
   model: RecipeModel,
-  credential: LoginDTO | null,
+  credential: String,
   isFavorite: boolean
 ): Feed {
   const likes: any[] = Array.isArray((model as any).likes) ? (model as any).likes : [];
@@ -31,7 +31,7 @@ export function recipeModelToFeed(
     })
   );
 
-  const userEmail = credential?.email;
+  const userEmail = credential;
   const isLiked =
     !!userEmail && likes.some(l => (l?.user?.email as string | undefined) === userEmail);
 
@@ -60,6 +60,7 @@ export function recipeModelToFeed(
     authorImageUrl: (model.author as any)?.imageUrl ?? null,
     isFavorite,
     isLiked,
+    canEdit: model.author.email === credential
   });
 }
 

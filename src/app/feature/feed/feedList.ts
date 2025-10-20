@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FeedService } from './feed.service';
-import { FeedState } from './feed.state';
+import { FeedListState } from './feedList.state';
 import { MatIcon } from "@angular/material/icon";
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { RecipeEditingDialogComponent } from './components/recipeEditing/recipeEditingDialog.component';
 import { RecipeDTO } from '../../core/model/recipe/recipe.dto';
 import { finalize } from 'rxjs';
+import { FeedCard, } from "./components/feedCard/feedCard.component";
+import { Feed } from './model/feed.model';
 
 @Component({
-  selector: 'app-feed',
-  imports: [MatIcon],
-  templateUrl: './feed.html',
+  selector: 'app-feed-list',
+  imports: [MatIcon, FeedCard],
+  templateUrl: './feedList.html',
 })
-export class Feed implements OnInit {
+export class FeedList implements OnInit {
 
-  state = new FeedState();
+  state = new FeedListState();
   constructor(private feedService: FeedService, private dialog: MatDialog) { }
 
 
@@ -64,5 +66,10 @@ export class Feed implements OnInit {
           error: (err) => { console.error('Error creating recipe:', err); }
         });
     }
+  }
+
+  onFeedCardClick(feed: Feed) {
+    console.log('Feed card clicked:', feed.canEdit);
+    // You can implement further actions here, such as navigating to a detailed view.
   }
 }
