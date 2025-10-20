@@ -1,0 +1,70 @@
+<div>
+    @if(feed){
+    <img [src]="feed.recipe.imageUrl" alt="{{ feed.recipe.name }}" class="w-full h-64 object-cover rounded-lg mb-4" />
+
+    <div class="mb-4">
+        <p class="text-gray-600 mb-2">By {{ feed.recipe.author.name }}</p>
+        <p class="text-gray-700">{{ feed.recipe.description }}</p>
+    </div>
+    <div class="flex items-center gap-4">
+        <span class="text-sm text-gray-500">Likes: {{ feed.likeCount }}</span>
+        <span class="text-sm text-gray-500">Comments: {{ feed.commentCount }}</span>
+    </div>
+
+    <div class="mb-4">
+        <mat-tab-group class="w-full sticky">
+            <mat-tab label="Details">
+                <div class="flex flex-col gap-3 px-2 py-4 overflow-y-auto">
+                    <div class="p-4 card rounded-md shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Ingredients</h3>
+                        <ul class="list-disc pl-5 marker:text-primary-light">
+                            @for(ingredient of feed.recipe.ingredients; track ingredient) {
+                            <li>{{ ingredient.quantity }} {{ ingredient.unit }} {{ ingredient.name }}</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="p-4 card rounded-md shadow-sm">
+                        <h3 class="text-lg font-semibold mb-2">Instructions</h3>
+                        <ol class="list-decimal pl-5 space-y-2 marker:text-primary-light">
+                            @for(step of feed.recipe.instructions; track $index) {
+                            <li>{{ step }}</li>
+                            }
+                        </ol>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <div class="flex flex-col items-center">
+                            @if(feed.recipe.author.imageUrl) {
+                            <img [src]="feed.recipe.author.imageUrl" alt="{{ feed.recipe.author.name }}"
+                                class="w-16 h-16 rounded-full object-cover mb-2" />
+                            } @else {
+                            <div class="w-16 h-16 rounded-full bg-gray-200 flex items-center justify-center mb-2">
+                                <mat-icon class="text-gray-500">person</mat-icon>
+                            </div>
+                            }
+                            <p class="text-sm text-gray-700 font-medium">{{ feed.recipe.author.name }}</p>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+
+            <mat-tab label="Comments">
+                <div class="px-2 py-4 overflow-y-auto">
+                    @if(feed.comments.length === 0) {
+                    <p class="text-gray-500">No comments yet.</p>
+                    } @else {
+                    <div class="space-y-4">
+                        @for(comment of feed.comments; track comment) {
+                        <div class="border-b pb-2">
+                            <p class="text-sm font-medium text-gray-800">{{ comment.author}}</p>
+                            <p class="text-gray-700">{{ comment.content }}</p>
+                            <p class="text-xs text-gray-500">{{ comment.createdAt | date:'short' }}</p>
+                        </div>
+                        }
+                    </div>
+                    }
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+    }
+</div>

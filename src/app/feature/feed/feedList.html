@@ -1,18 +1,39 @@
-<div class="p-7">
-    @if(state.isLoading) {
-    <p>Loading feed...</p>
-    } @else if (state.error) {
-    <p class="text-red-500">Error: {{ state.error }}</p>
-    } @else {
-    <div class="mb-4 text-gray-600">Total recipes: {{ state.feeds.length }}</div>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        @for(feed of state.feeds; track feed.id) {
-        <app-feed-card [feed]="feed" (cardClick)="onFeedCardClick($event)"></app-feed-card>
+<div class="flex h-full overflow-hidden">
+    <!-- Main content -->
+    <div class="flex-1 p-7 overflow-auto">
+        @if(state.isLoading) {
+        <p>Loading feed...</p>
+        } @else if (state.error) {
+        <p class="text-red-500">Error: {{ state.error }}</p>
+        } @else {
+        <div class="mb-4 text-gray-600">Total recipes: {{ state.feeds.length }}</div>
+        <div class="flex flex-wrap gap-6 ">
+            @for(feed of state.feeds; track feed.id) {
+            <app-feed-card [feed]="feed" (cardClick)="onFeedCardClick($event)"></app-feed-card>
+            }
+        </div>
+        }
+        <button mat-fab color="primary" class="fixed bottom-4 right-4 bg-inverse-primary-light z-50 
+       rounded-xl flex items-center justify-center p-2 text-primary-light" (click)="createRecipe()">
+            <mat-icon>add</mat-icon>
+        </button>
+    </div>
+
+    <div class="w-96 h-full border-l shadow-lg transition-transform duration-300 overflow-hidden flex flex-col"
+        [class.translate-x-0]="state.selectedFeed" [class.translate-x-full]="!state.selectedFeed">
+        @if(state.selectedFeed) {
+        <div class="p-6 flex-shrink-0">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-bold">{{ state.selectedFeed.recipe.name }}</h2>
+                <button mat-icon-button (click)="closeFeedDetail()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="flex-1 overflow-y-auto px-6 min-h-0" style="scrollbar-gutter: stable both-edges;">
+            <app-feed-details [feed]="state.selectedFeed"></app-feed-details>
+        </div>
         }
     </div>
-    }
-    <button mat-fab color="primary" class="fixed bottom-4 right-4 bg-inverse-primary-light 
-   rounded-xl flex items-center justify-center p-2 text-primary-light" (click)="openRecipeEditingDialog()">
-        <mat-icon>add</mat-icon>
-    </button>
 </div>

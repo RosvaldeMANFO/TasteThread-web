@@ -7,10 +7,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { DashboardState } from './dashboard.state';
 import { FeedList } from "../feed/feedList";
+import { Home } from '../home/home';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule, MatToolbarModule, FeedList],
+  imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule, MatToolbarModule, FeedList, Home],
   templateUrl: './dashboard.html',
   styleUrls: ['./style.css'],
 })
@@ -25,12 +26,11 @@ export class Dashboard implements OnInit {
     isSidenavOpen: true,
     appName: 'Cook',
     menuItems: [
+      { name: 'Home', route: '/home', icon: 'home' },
       { name: 'Feed', route: '/feed', icon: 'feed' },
-      { name: 'Pending feed', route: '/pending-feed', icon: 'hourglass_top' },
-      { name: 'Users', route: '/users', icon: 'people' },
       { name: "Log out", route: "/logout", icon: "logout" }
     ],
-    activeRoute: '/feed',
+    activeRoute: '/home',
   };
 
   ngOnInit() {

@@ -2,16 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { FeedService } from './feed.service';
 import { FeedListState } from './feedList.state';
 import { MatIcon } from "@angular/material/icon";
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RecipeEditingDialogComponent } from './components/recipeEditing/recipeEditingDialog.component';
 import { RecipeDTO } from '../../core/model/recipe/recipe.dto';
 import { finalize } from 'rxjs';
 import { FeedCard, } from "./components/feedCard/feedCard.component";
 import { Feed } from './model/feed.model';
+import { FeedDetailsComponent } from "./components/feedDetails/feedDetails.component";
 
 @Component({
   selector: 'app-feed-list',
-  imports: [MatIcon, FeedCard],
+  imports: [MatIcon, FeedCard, FeedDetailsComponent],
   templateUrl: './feedList.html',
 })
 export class FeedList implements OnInit {
@@ -35,22 +36,28 @@ export class FeedList implements OnInit {
       });
   }
 
-  openRecipeEditingDialog() {
-    const ref = this.dialog.open(RecipeEditingDialogComponent, {
-      width: '900px',
-      maxWidth: '95vw',
-      maxHeight: '90vh',
-      disableClose: true,
-      data: {
+  createRecipe() {
+    const ref = this.openRecipeEditingDialog(
+      {
         title: 'Create recipe',
         message: 'Recipe editor coming soon.',
         confirmText: 'Got it'
       },
-      autoFocus: false
-    });
+    );
 
     ref.afterClosed().subscribe(payload => {
       this.handleRecipeCreated(payload)
+    });
+  }
+
+  private openRecipeEditingDialog(data: any): MatDialogRef<RecipeEditingDialogComponent> {
+    return this.dialog.open(RecipeEditingDialogComponent, {
+      width: '900px',
+      maxWidth: '95vw',
+      maxHeight: '90vh',
+      disableClose: true,
+      data: data,
+      autoFocus: false
     });
   }
 
@@ -69,7 +76,10 @@ export class FeedList implements OnInit {
   }
 
   onFeedCardClick(feed: Feed) {
-    console.log('Feed card clicked:', feed.canEdit);
-    // You can implement further actions here, such as navigating to a detailed view.
+      this.state.selectedFeed = feed;
+  }
+
+  closeFeedDetail() {
+      this.state.selectedFeed = null;
   }
 }

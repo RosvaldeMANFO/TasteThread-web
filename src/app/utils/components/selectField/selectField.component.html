@@ -7,8 +7,9 @@
     (selectionChange)="onSelect($event.value)"
     [required]="required"
     [multiple]="multiple"
-    [panelClass]="''"
+    [panelClass]="'!bg-primary-container-light'"
     [disabled]="disabled"
+    [class]="'!px-2 !custom-scrollbar'"
   >
     @for (opt of options; track opt.value) {
       <mat-option [value]="opt.value">{{ opt.label }}</mat-option>

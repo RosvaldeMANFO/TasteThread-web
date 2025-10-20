@@ -17,6 +17,30 @@
 	}
 }
 
+::ng-deep .custom-scrollbar {
+      /* Webkit browsers (Chrome, Safari, Edge) */
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      &::-webkit-scrollbar-track {
+        background: var(--color-surface-container-light);
+      }
+      
+      &::-webkit-scrollbar-thumb {
+        background: var(--color-primary-light);
+        border-radius: 4px;
+      }
+      
+      &::-webkit-scrollbar-thumb:hover {
+        background: var(--color-primary-container-light);
+      }
+
+      /* Firefox */
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-primary-light) var(--color-surface-container-light);
+    }
+
 @theme {
 	--color-primary-light: #8F4C35;
 	--color-on-primary-light: #FFFFFF;
