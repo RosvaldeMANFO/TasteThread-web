@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { environment } from "../../../environments/development";
+import { environment } from "../../../environments/environment";
 import { RequestResult } from "../../core/model/requestResult.model";
 import { RecipeModel } from "../../core/model/recipe/recipe.model";
 import { map } from "rxjs/operators";
