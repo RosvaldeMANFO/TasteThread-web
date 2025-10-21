@@ -11,11 +11,7 @@ import { longToLocalDateTime } from "../../../utils/datetime.util";
 
 
 
-export function recipeModelToFeed(
-  model: RecipeModel,
-  credential: String,
-  isFavorite: boolean
-): Feed {
+export function recipeModelToFeed(model: RecipeModel): Feed {
   const likes: any[] = Array.isArray((model as any).likes) ? (model as any).likes : [];
   const commentsRaw: any[] = Array.isArray((model as any).comments) ? (model as any).comments : [];
 
@@ -31,36 +27,20 @@ export function recipeModelToFeed(
     })
   );
 
-  const userEmail = credential;
+  const userEmail = sessionStorage.getItem('userEmail') || '';
   const isLiked =
     !!userEmail && likes.some(l => (l?.user?.email as string | undefined) === userEmail);
 
-  const recipe = new RecipeModel({
-    id: model.id,
-    name: model.name,
-    author: model.author instanceof UserModel ? model.author : new UserModel(model.author as any),
-    imageUrl: model.imageUrl ?? null,
-    mealType: model.mealType,
-    description: model.description,
-    dietaryRestrictions: [...(model.dietaryRestrictions ?? [])],
-    country: model.country,
-    cookTime: model.cookTime,
-    servings: model.servings,
-    ingredients: [...(model.ingredients ?? [])],
-    instructions: [...(model.instructions ?? [])],
-  });
-
   return new Feed({
     id: model.id,
-    recipe,
+    recipe: model,
     likeCount: likes.length,
     commentCount: comments.length,
     likes: likeUserNames,
     comments,
     authorImageUrl: (model.author as any)?.imageUrl ?? null,
-    isFavorite,
     isLiked,
-    canEdit: model.author.email === credential
+    canEdit: model.author.email === userEmail
   });
 }
 

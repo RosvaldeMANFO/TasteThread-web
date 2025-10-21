@@ -10,6 +10,6 @@ import { MatIconModule } from "@angular/material/icon";
     templateUrl: './feedDetails.component.html',
     imports: [CommonModule, MatTabsModule, MatIconModule]
 })
-export class FeedDetailsComponent {
+export class FeedDetails {
     @Input() feed?: Feed;
 }

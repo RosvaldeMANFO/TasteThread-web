@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { StatsModel } from '../../../core/model/admin/stats.model';
+import { StatsModel } from '../../../../core/model/admin/stats.model';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
 
@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-header',
   imports: [CommonModule, MatProgressSpinnerModule],
-  templateUrl: './header.html',
+  templateUrl: './header.component.html',
 })
 export class Header {
   @Input() stats?: StatsModel;
