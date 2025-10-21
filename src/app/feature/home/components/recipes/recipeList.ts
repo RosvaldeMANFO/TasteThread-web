@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ViewChild, EventEmitter, Input, Output, ɵɵq
 import { RecipeListState } from './recipeList.state';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { RecipeModel } from '../../../core/model/recipe/recipe.model';
+import { RecipeModel } from '../../../../core/model/recipe/recipe.model';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,13 +10,15 @@ import { merge } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import { CommonModule } from '@angular/common';
+
 
 
 @Component({
   selector: 'app-recipe-list',
   standalone: true,
   imports: [MatTableModule, MatPaginatorModule, MatProgressSpinnerModule,
-     MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule],
+     MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, CommonModule],
   templateUrl: './recipeList.html',
 })
 export class RecipeList implements AfterViewInit {
@@ -38,6 +40,8 @@ export class RecipeList implements AfterViewInit {
   @Output() search: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadMoreSearches: EventEmitter<void> = new EventEmitter<void>();
   @Output() refresh: EventEmitter<void> = new EventEmitter<void>(); 
+  @Output() reveal: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
+  @Output() delete: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
 
   displayedColumns: string[] = ['name', 'mealType', 'origin', 'author', 'actions'];
   dataSource = new MatTableDataSource<RecipeModel>([]);
@@ -63,11 +67,11 @@ export class RecipeList implements AfterViewInit {
   }
 
   revealRecipe(recipe: RecipeModel) {
-    console.log('Revealing recipe:', recipe);
+    this.reveal.emit(recipe);
   }
 
   deleteRecipe(recipe: RecipeModel) {
-    console.log('Deleting recipe:', recipe);
+    this.delete.emit(recipe);
   }
 
   applyFilter(event: Event) {

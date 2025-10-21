@@ -6,12 +6,11 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { DashboardState } from './dashboard.state';
-import { FeedList } from "../feed/feedList";
 import { Home } from '../home/home';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule, MatToolbarModule, FeedList, Home],
+  imports: [CommonModule, MatSidenavModule, MatIconModule, MatListModule, MatToolbarModule, Home],
   templateUrl: './dashboard.html',
   styleUrls: ['./style.css'],
 })
@@ -27,7 +26,6 @@ export class Dashboard implements OnInit {
     appName: 'Cook',
     menuItems: [
       { name: 'Home', route: '/home', icon: 'home' },
-      { name: 'Feed', route: '/feed', icon: 'feed' },
       { name: "Log out", route: "/logout", icon: "logout" }
     ],
     activeRoute: '/home',

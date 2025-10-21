@@ -1,13 +1,46 @@
-<div class="p-4 flex flex-col gap-7">
+<div class="p-4 flex flex-col gap-7 h-full overflow-x-hidden" style="scrollbar-gutter: stable both-edges;">
     <app-header [stats]="state.stats" [isLoading]="state.isLoading"></app-header>
-    <div class="min-w-sm flex flex-wrap w-full">
-        <div class="w-1/2 flex flex-col gap-4">
+    <div class="flex flex-wrap w-full flex-1 min-h-0 gap-4">
+        <div class="flex-2 min-w-sm flex flex-col gap-4 h-full">
             <h3 class="text-primary-light font-bold">Recipe List</h3>
-            <div class="card shadow-md w-full rounded-md p-2 h-full">
+            <div class="card shadow-md w-full rounded-md p-2 flex-1 min-h-0 overflow-hidden">
                 <app-recipe-list [state]="state.recipeListState" (loadMore)="loadMoreRecipes()"
                     (search)="searchRecipes($event)" (loadMoreSearches)="loadMoreSearchResults()"
-                    (refresh)="refreshRecipes()"></app-recipe-list>
+                    (refresh)="refreshRecipes()" (reveal)="revealRecipe($event)"></app-recipe-list>
             </div>
         </div>
+        <div class="flex-1 min-w-sm md:h-full h-auto md:border-l transition-transform duration-300 flex flex-col overflow-hidden"
+            [class.translate-x-0]="state.recipeListState.selectedFeed"
+            [class.translate-x-full]="!state.recipeListState.selectedFeed">
+            @if(state.recipeListState.selectedFeed) {
+            <div class="p-6 flex-shrink-0">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-2xl font-bold">
+                        {{ state.recipeListState.selectedFeed.recipe.name }}
+                    </h2>
+                    <div class="flex gap-2">
+                        @if(!state.recipeListState.selectedFeed.recipe.approved) {
+                        <button mat-fab color="primary" class="bg-primary-light z-50 
+                        rounded-md flex items-center justify-center p-1 text-on-primary-light" (click)="approveRecipe()">
+                            <mat-icon>check</mat-icon>
+                            Approve
+                        </button>
+                        }
+                        <button mat-icon-button class="text-primary-light" (click)="closeFeedDetail()">
+                            <mat-icon>close</mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-1 overflow-y-auto px-6 min-h-0" style="scrollbar-gutter: stable both-edges;">
+                <app-feed-details [feed]="state.recipeListState.selectedFeed"></app-feed-details>
+            </div>
+            }
+        </div>
     </div>
+    <button mat-fab color="primary" class="fixed bottom-4 right-4 bg-inverse-primary-light z-50 
+       rounded-xl flex items-center justify-center p-2 text-primary-light" (click)="createRecipe()">
+        <mat-icon>add</mat-icon>
+    </button>
 </div>

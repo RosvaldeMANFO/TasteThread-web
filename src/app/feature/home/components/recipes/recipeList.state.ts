@@ -1,9 +1,10 @@
-import { RecipeModel } from "../../../core/model/recipe/recipe.model";
+import { RecipeModel } from "../../../../core/model/recipe/recipe.model";
+import { Feed } from "../../model/feed.model";
 
 export class RecipeListState {
     isLoading: boolean = false;
     recipes: RecipeModel[] = [];
     error: string | null = null;
     searchTerm: string = '';
-    selectedRecipe: RecipeModel | null = null;
+    selectedFeed: Feed | null = null;
 }

@@ -21,6 +21,7 @@ export class RecipeModel {
   approved: boolean = false;
   createdAt: number = Date.now();
   updatedAt: number = Date.now();
+  canEdit: boolean = false;
 
   constructor(data: Partial<RecipeModel>) {
     Object.assign(this, {
@@ -29,7 +30,6 @@ export class RecipeModel {
       instructions: [],
       comments: [],
       likes: [],
-      approved: false,
       ...data,
     });
   }
@@ -51,6 +51,7 @@ export class RecipeModel {
       comments: (json.comments || []).map((c: any) => RecipeCommentModel.fromJSON(c)),
       likes: (json.likes || []).map((l: any) => RecipeLikeModel.fromJSON(l)),
       approved: json.approved ?? false,
+      canEdit: json.canEdit ?? false,
       createdAt: json.createdAt,
       updatedAt: json.updatedAt,
     });
@@ -73,6 +74,7 @@ export class RecipeModel {
       comments: this.comments?.map(c => c.toJSON()),
       likes: this.likes?.map(l => l.toJSON()),
       approved: this.approved,
+      canEdit: this.canEdit,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
     };
