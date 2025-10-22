@@ -6,7 +6,9 @@
             <div class="card shadow-md w-full rounded-md p-2 flex-1 min-h-0 overflow-hidden">
                 <app-recipe-list [state]="state.recipeListState" (loadMore)="loadMoreRecipes()"
                     (search)="searchRecipes($event)" (loadMoreSearches)="loadMoreSearchResults()"
-                    (refresh)="refreshRecipes()" (reveal)="revealRecipe($event)"></app-recipe-list>
+                    (refresh)="refreshRecipes()" (reveal)="revealRecipe($event)"
+                    (edit)="editRecipe($event)"
+                    (delete)="deleteRecipe($event)"></app-recipe-list>
             </div>
         </div>
         <div class="flex-1 min-w-sm md:h-full h-auto md:border-l transition-transform duration-300 flex flex-col overflow-hidden"

@@ -1,10 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CacheBustPipe } from "../../../../../utils/cache-bust-pipe";
 
 @Component({
   selector: 'app-photo-step',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, CacheBustPipe],
   templateUrl: './photoStep.component.html'
 })
 export class PhotoStepComponent {

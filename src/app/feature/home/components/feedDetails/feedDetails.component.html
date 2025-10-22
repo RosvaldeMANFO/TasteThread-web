@@ -1,6 +1,6 @@
 <div>
     @if(feed){
-    <img [src]="feed.recipe.imageUrl" alt="{{ feed.recipe.name }}" class="w-full h-64 object-cover rounded-lg mb-4" />
+    <img [src]="feed.recipe.imageUrl | cacheBust" alt="{{ feed.recipe.name }}" class="w-full h-64 object-cover rounded-lg mb-4" />
 
     <div class="mb-4">
         <p class="text-gray-600 mb-2">By {{ feed.recipe.author.name }}</p>

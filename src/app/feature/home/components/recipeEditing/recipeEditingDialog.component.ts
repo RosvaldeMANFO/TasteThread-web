@@ -13,7 +13,13 @@ import { CookingStepComponent } from './steps/cookingStep.component';
 import { PhotoStepComponent } from './steps/photoStep.component';
 import { IngredientDTO } from '../../../../core/model/recipe/ingredient.dto';
 import { RecipeDTO } from '../../../../core/model/recipe/recipe.dto';
-export interface RecipeEditingDialogData { recipe?: any; }
+import { count } from 'console';
+
+
+export interface RecipeEditingDialogData { 
+  recipe?: RecipeDTO;
+  title: string;
+ }
 
 @Component({
   selector: 'app-recipe-editing-dialog',
@@ -86,16 +92,18 @@ export class RecipeEditingDialogComponent {
       servings: this.additionalForm.value.servings ?? 0,
       cookTime: this.additionalForm.value.cookTime ?? 0,
       ingredients: (this.items.value ?? []).map(i => IngredientDTO.fromJSON(i)),
-      instructions: this.stepItems.value ?? [],
-      image: this.photoForm.value.image ?? null,
+      instructions: this.stepItems.value,
+      image: this.photoForm.value.image,
+      feedId: this.data.recipe?.feedId ?? undefined,
+      imageUrl: this.photoForm.value.image ? null : this.data.recipe?.imageUrl,
     });
     this.ref.close(dto);
   }
   
   close() { this.ref.close(); }
 
-  private prefill(recipe: any) {
-    this.descriptionForm.patchValue({ name: recipe?.name ?? '', origin: recipe?.country ?? '', mealType: recipe?.mealType ?? '' });
+  private prefill(recipe: RecipeDTO) {
+    this.descriptionForm.patchValue({ name: recipe?.name ?? '', origin: recipe?.origin ?? '', mealType: recipe?.mealType ?? '' });
     this.additionalForm.patchValue({
       description: recipe?.description ?? '',
       dietaryRestrictions: recipe?.dietaryRestrictions ?? [],
@@ -105,7 +113,7 @@ export class RecipeEditingDialogComponent {
     (recipe?.ingredients ?? []).forEach((i: any) =>
       this.items.push(this.fb.group({ name: [i?.name ?? '', Validators.required], quantity: [i?.quantity ?? 0, [Validators.required, Validators.min(0)]], unit: [i?.unit ?? ''] }))
     );
-    (recipe?.instructions ?? recipe?.steps ?? []).forEach((s: string) =>
+    (recipe?.instructions ?? recipe?.instructions ?? []).forEach((s: string) =>
       this.stepItems.push(new FormControl<string>(s ?? '', { nonNullable: true }))
     );
     if (recipe?.imageUrl) this.photoPreview = recipe.imageUrl;

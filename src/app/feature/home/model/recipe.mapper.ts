@@ -44,10 +44,7 @@ export function recipeModelToFeed(model: RecipeModel): Feed {
   });
 }
 
-export function recipeModelToDTO(
-  model: RecipeModel,
-  image?: string | ArrayBuffer | Blob | null
-): RecipeDTO {
+export function recipeModelToDTO(model: RecipeModel): RecipeDTO {
   const ingredients: IngredientDTO[] = (model.ingredients ?? []).map((i: any) =>
     Object.assign(new IngredientDTO(), {
       id: i?.id,
@@ -57,20 +54,19 @@ export function recipeModelToDTO(
     })
   );
 
-  return {
+  return new RecipeDTO({
+    feedId: model.id,
     authorName: model.author?.name ?? '',
     authorId: model.author?.id ?? '',
-    feedId: model.id,
     name: model.name,
-    description: model.description,
-    dietaryRestrictions: [...(model.dietaryRestrictions ?? [])],
     origin: model.country,
     mealType: model.mealType,
-    ingredients,
-    instructions: [...(model.instructions ?? [])],
-    cookTime: model.cookTime,
-    image: image ?? null,
-    imageUrl: model.imageUrl ?? null,
+    description: model.description,
+    dietaryRestrictions: model.dietaryRestrictions ?? [],
     servings: model.servings,
-  } as RecipeDTO;
+    cookTime: model.cookTime,
+    ingredients: ingredients,
+    instructions: model.instructions ?? [],
+    imageUrl: model.imageUrl ?? null,
+  });
 }
