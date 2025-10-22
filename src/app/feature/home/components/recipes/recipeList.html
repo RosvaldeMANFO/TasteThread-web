@@ -5,11 +5,22 @@
   </div>
   }
 
-  <mat-form-field class="!w-full">
-    <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Search with a keyword" #input>
-    <mat-icon matSuffix (click)="refreshList(input)">clear</mat-icon>
-  </mat-form-field>
+  <div class="w-full flex gap-2 items-center">
+    <mat-form-field class="w-0 min-w-0 grow">
+      <mat-label>Filter</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search with a keyword" #input>
+      <mat-icon matSuffix (click)="refreshList(input)">clear</mat-icon>
+    </mat-form-field>
+    <mat-button-toggle-group [value]="state?.showUnapprovedOnly" (change)="togglePendingFilter($event.value)"
+      class="!text-gray-700 !border !rounded-md [&_.mat-button-toggle-checked]:!bg-primary-light [&_.mat-button-toggle-checked]:!text-on-primary-light">
+      <mat-button-toggle [value]="false">
+        All Recipes
+      </mat-button-toggle>
+      <mat-button-toggle [value]="true">
+        Pending
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
 
   <div class="relative max-h-[400px] overflow-auto">
     <table mat-table [dataSource]="dataSource" class="w-full">
@@ -35,18 +46,18 @@
       </ng-container>
 
       <ng-container matColumnDef="actions">
-        <th mat-header-cell *matHeaderCellDef class="sticky top-0 z-[5] !bg-white">Actions</th>
+        <th mat-header-cell *matHeaderCellDef class="sticky top-0 z-[5] !bg-white"></th>
         <td mat-cell *matCellDef="let element">
           <div class="flex gap-2 text-primary-light">
             <button mat-icon-button (click)="revealRecipe(element)">
               <mat-icon>visibility</mat-icon>
             </button>
             @if(element.canEdit) {
-              <button mat-icon-button (click)="editRecipe(element)">
-                <mat-icon>edit</mat-icon>
-              </button>
+            <button mat-icon-button (click)="editRecipe(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
             }
-            <button mat-icon-button class="!text-red-300" (click)="deleteRecipe(element)">
+            <button mat-icon-button class="!text-red-400" (click)="deleteRecipe(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

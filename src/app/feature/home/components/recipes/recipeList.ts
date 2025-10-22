@@ -8,9 +8,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { merge } from 'rxjs';
 import { startWith, tap } from 'rxjs/operators';
-import {MatInputModule} from '@angular/material/input';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { CustomButtonComponent } from "../../../../utils/components/custom-button/custom-button";
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
 
 
 
@@ -18,7 +20,8 @@ import { CommonModule } from '@angular/common';
   selector: 'app-recipe-list',
   standalone: true,
   imports: [MatTableModule, MatPaginatorModule, MatProgressSpinnerModule,
-     MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule, CommonModule],
+    MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule,
+    CommonModule, CustomButtonComponent, MatButtonToggleModule],
   templateUrl: './recipeList.html',
 })
 export class RecipeList implements AfterViewInit {
@@ -39,10 +42,11 @@ export class RecipeList implements AfterViewInit {
   @Output() loadMore: EventEmitter<void> = new EventEmitter<void>();
   @Output() search: EventEmitter<string> = new EventEmitter<string>();
   @Output() loadMoreSearches: EventEmitter<void> = new EventEmitter<void>();
-  @Output() refresh: EventEmitter<void> = new EventEmitter<void>(); 
+  @Output() refresh: EventEmitter<void> = new EventEmitter<void>();
   @Output() reveal: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
   @Output() delete: EventEmitter<string> = new EventEmitter<string>();
   @Output() edit: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
+  @Output() toggleUnapprovedFilter: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   displayedColumns: string[] = ['name', 'mealType', 'origin', 'author', 'actions'];
   dataSource = new MatTableDataSource<RecipeModel>([]);
@@ -81,17 +85,21 @@ export class RecipeList implements AfterViewInit {
 
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-    if(filterValue.length > 0) {
+    if (filterValue.length > 0) {
       this.search.emit(filterValue);
     } else {
       this.refresh.emit();
     }
   }
 
-  refreshList(input: HTMLInputElement) {
-    if(input.value.length > 0) {
+  refreshList(input?: HTMLInputElement) {
+    if (input && input.value.length > 0) {
       input.value = '';
-      this.refresh.emit();
     }
+    this.refresh.emit();
+  }
+
+  togglePendingFilter(showUnapprovedOnly: boolean) {
+    this.toggleUnapprovedFilter.emit(showUnapprovedOnly);
   }
 }

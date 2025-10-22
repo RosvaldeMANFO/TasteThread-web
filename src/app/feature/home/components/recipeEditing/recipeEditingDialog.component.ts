@@ -14,6 +14,7 @@ import { PhotoStepComponent } from './steps/photoStep.component';
 import { IngredientDTO } from '../../../../core/model/recipe/ingredient.dto';
 import { RecipeDTO } from '../../../../core/model/recipe/recipe.dto';
 import { count } from 'console';
+import { CustomButtonComponent } from "../../../../utils/components/custom-button/custom-button";
 
 
 export interface RecipeEditingDialogData { 
@@ -28,6 +29,7 @@ export interface RecipeEditingDialogData {
     CommonModule, ReactiveFormsModule,
     MatDialogModule, MatButtonModule, MatIconModule, MatStepperModule,
     DescriptionStepComponent, AdditionalInfoStepComponent, IngredientsStepComponent, CookingStepComponent, PhotoStepComponent,
+    CustomButtonComponent
 ],
   templateUrl: './recipeEditingDialog.component.html'
 })
