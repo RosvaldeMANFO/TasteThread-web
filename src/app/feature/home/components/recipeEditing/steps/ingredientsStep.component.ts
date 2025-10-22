@@ -7,11 +7,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { UNIT_OPTIONS } from '../../../model/unit.model';
 import { SelectField } from '../../../../../utils/components/selectField/selectField.component';
+import { CustomButtonComponent } from '../../../../../utils/components/custom-button/custom-button';
 
 @Component({
   selector: 'app-ingredients-step',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatIconModule, MatButtonModule, SelectField],
+  imports: [CommonModule, ReactiveFormsModule, MatFormFieldModule,
+     MatInputModule, MatIconModule, MatButtonModule, SelectField, CustomButtonComponent],
   templateUrl: './ingredientsStep.component.html'
 })
 export class IngredientsStepComponent {

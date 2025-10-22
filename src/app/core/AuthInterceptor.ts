@@ -12,7 +12,7 @@ import { RequestResult } from './model/requestResult.model';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-    constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   private isRefreshing = false;
   private tokenSubject = new BehaviorSubject<Token | null>(null);
@@ -21,7 +21,7 @@ export class AuthInterceptor implements HttpInterceptor {
     const token: Token = JSON.parse(sessionStorage.getItem('token') || 'null');
     let authReq = req;
     if (token) {
-      authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token.accessToken}` }});
+      authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token.accessToken}` } });
     }
 
     return next.handle(authReq).pipe(
@@ -43,7 +43,7 @@ export class AuthInterceptor implements HttpInterceptor {
         switchMap((newToken: Token) => {
           this.isRefreshing = false;
           this.tokenSubject.next(newToken);
-          const cloned = req.clone({ setHeaders: { Authorization: `Bearer ${newToken.accessToken}` }});
+          const cloned = req.clone({ setHeaders: { Authorization: `Bearer ${newToken.accessToken}` } });
           return next.handle(cloned);
         }),
         catchError(err => {
@@ -57,7 +57,7 @@ export class AuthInterceptor implements HttpInterceptor {
         filter(token => token != null),
         take(1),
         switchMap(token => {
-          const cloned = req.clone({ setHeaders: { Authorization: `Bearer ${token.accessToken}` }});
+          const cloned = req.clone({ setHeaders: { Authorization: `Bearer ${token.accessToken}` } });
           return next.handle(cloned);
         })
       );
@@ -65,23 +65,24 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   refreshToken(): Observable<Token> {
-        const token: Token = JSON.parse(sessionStorage.getItem('token') || '{}');
-        return this.http.post<RequestResult<Token>>(
-            `${environment.apiUrl}/auth/refresh`,
-            token.refreshToken,
-            {
-                headers: { 'Content-Type': 'text/plain' },
-                withCredentials: false
-            }
-        ).pipe(
-            map(r => r.data as Token),
-            tap(token => {
-                sessionStorage.setItem('token', JSON.stringify(token));
-            }),
-        );
-    }
+    const token: Token = JSON.parse(sessionStorage.getItem('token') || '{}');
+    console.log('Refreshing token', token);
+    return this.http.post<RequestResult<Token>>(
+      `${environment.apiUrl}/auth/refresh`,
+      token.refreshToken,
+      {
+        headers: { 'Content-Type': 'text/plain' },
+        withCredentials: false
+      }
+    ).pipe(
+      map(r => r.data as Token),
+      tap(token => {
+        sessionStorage.setItem('token', JSON.stringify(token));
+      }),
+    );
+  }
 
-    clearTokens() {
-        sessionStorage.removeItem('token');
-    }
+  clearTokens() {
+    sessionStorage.removeItem('token');
+  }
 }

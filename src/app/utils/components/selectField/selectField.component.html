@@ -1,5 +1,5 @@
-<mat-form-field [appearance]="'outline'" [class]="" 
-class="w-full ">
+<mat-form-field [appearance]="appearance" 
+class="!w-full">
   @if (label) {
     <mat-label>{{ label }}</mat-label>
   }
@@ -8,7 +8,7 @@ class="w-full ">
     (selectionChange)="onSelect($event.value)"
     [required]="required"
     [multiple]="multiple"
-    [panelClass]="'!bg-primary-container-light'"
+    [panelClass]="'!bg-primary-container-light !overflow-y-auto'"
     [disabled]="disabled"
   >
     @for (opt of options; track opt.value) {

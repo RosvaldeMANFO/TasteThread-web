@@ -3,13 +3,25 @@ import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 import { AuthenticationState } from './authentication.state';
 import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-
+import { CustomButtonComponent } from '../../utils/components/custom-button/custom-button';
 
 @Component({
   selector: 'app-authentication',
-  imports: [CommonModule, MatIconModule, FormsModule],
+  standalone: true,
+  imports: [
+    CommonModule, 
+    MatIconModule, 
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule, 
+    CustomButtonComponent
+  ],
   templateUrl: './authentication.html',
 })
 export class Authentication implements OnInit {
@@ -81,5 +93,3 @@ export class Authentication implements OnInit {
     this.router.navigate(route, { replaceUrl: true });
   }
 }
-
-

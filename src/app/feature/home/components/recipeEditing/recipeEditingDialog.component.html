@@ -52,7 +52,8 @@
     </mat-step>
 
     <mat-step [stepControl]="photoForm" label="Photo">
-      <app-photo-step [preview]="photoPreview" (change)="onPhotoSelected($event.file, $event.preview)"></app-photo-step>
+      <app-photo-step [preview]="photoPreview" (photoChange)="onPhotoSelected($event.file, $event.preview)">
+      </app-photo-step>
       <div class="mt-4 flex justify-between">
         <app-custom-button icon="arrow_back" variant="secondary" (clicked)="stepper.previous()">
           Back

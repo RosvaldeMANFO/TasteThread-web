@@ -43,7 +43,7 @@ export class RecipeEditingDialogComponent {
   photoForm: FormGroup;
 
   photoFile: File | null = null;
-  photoPreview: string | null = null;
+  photoPreview?: string;
 
   constructor(
     private fb: FormBuilder,
@@ -80,7 +80,7 @@ export class RecipeEditingDialogComponent {
 
   onPhotoSelected(file: File | null, preview: string | null) {
     this.photoFile = file;
-    this.photoPreview = preview;
+    this.photoPreview = preview ?? undefined;
     this.photoForm.patchValue({ image: preview });
   }
 

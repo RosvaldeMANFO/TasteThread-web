@@ -29,6 +29,7 @@ export class SelectField<T = any> implements ControlValueAccessor {
   @Input() required = false;
   @Input() multiple = false;
   @Input() placeholder = '';
+  @Input() appearance: 'fill' | 'outline' = 'outline';
   @Input() hint = '';
   @Input() compareWith: ((o1: any, o2: any) => boolean) | null = null;
 

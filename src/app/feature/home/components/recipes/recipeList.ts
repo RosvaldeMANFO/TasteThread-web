@@ -21,7 +21,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   standalone: true,
   imports: [MatTableModule, MatPaginatorModule, MatProgressSpinnerModule,
     MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-    CommonModule, CustomButtonComponent, MatButtonToggleModule],
+    CommonModule, MatButtonToggleModule],
   templateUrl: './recipeList.html',
 })
 export class RecipeList implements AfterViewInit {
@@ -95,8 +95,8 @@ export class RecipeList implements AfterViewInit {
   refreshList(input?: HTMLInputElement) {
     if (input && input.value.length > 0) {
       input.value = '';
+      this.refresh.emit();
     }
-    this.refresh.emit();
   }
 
   togglePendingFilter(showUnapprovedOnly: boolean) {
