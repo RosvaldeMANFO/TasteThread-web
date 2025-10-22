@@ -47,7 +47,8 @@ export class RecipeList implements AfterViewInit {
   @Output() delete: EventEmitter<string> = new EventEmitter<string>();
   @Output() edit: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
   @Output() toggleUnapprovedFilter: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Output() create: EventEmitter<void> = new EventEmitter<void>();
+  
   displayedColumns: string[] = ['name', 'mealType', 'origin', 'author', 'actions'];
   dataSource = new MatTableDataSource<RecipeModel>([]);
   resultsLength = 0;

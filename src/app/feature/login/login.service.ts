@@ -5,7 +5,7 @@ import { RequestResult } from "../../core/model/requestResult.model";
 import { Injectable } from "@angular/core";
 
 @Injectable({ providedIn: 'root' })
-export class AuthenticationService {
+export class LoginService {
     private apiUrl: string;
 
     constructor(private http: HttpClient) {

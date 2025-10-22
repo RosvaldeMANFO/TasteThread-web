@@ -1,7 +1,7 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
-import { AuthenticationService } from './authentication.service';
-import { AuthenticationState } from './authentication.state';
+import { LoginService } from './login.service';
+import { AuthenticationState } from './login.state';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -9,9 +9,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomButtonComponent } from '../../utils/components/custom-button/custom-button';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
-  selector: 'app-authentication',
+  selector: 'app-login',
   standalone: true,
   imports: [
     CommonModule, 
@@ -22,11 +23,11 @@ import { CustomButtonComponent } from '../../utils/components/custom-button/cust
     FormsModule, 
     CustomButtonComponent
   ],
-  templateUrl: './authentication.html',
+  templateUrl: './login.html',
 })
-export class Authentication implements OnInit {
+export class Login implements OnInit {
   state: AuthenticationState = {
-    user: {
+    credential: {
       email: '',
       password: ''
     },
@@ -37,15 +38,16 @@ export class Authentication implements OnInit {
 
   constructor(
     private router: Router,
-    private authService: AuthenticationService,
+    private service: LoginService,
+    private auth: AuthService,
     @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        this.state.user = JSON.parse(storedUser);
+      const credential = this.auth.getCredential();
+      if (credential) {
+        this.state.credential = credential;
         this.state.rememberMe = true;
       }
     }
@@ -60,20 +62,19 @@ export class Authentication implements OnInit {
       return;
     }
     this.state.loading = true;
-    this.authService.login({
-      email: this.state.user.email,
-      password: this.state.user.password
+    this.service.login({
+      email: this.state.credential.email,
+      password: this.state.credential.password
     })
       .subscribe({
         next: (response) => {
           this.state.loading = false;
-          sessionStorage.setItem('userEmail', this.state.user.email);
           if (this.state.rememberMe) {
-            localStorage.setItem('user', JSON.stringify(this.state.user));
+            this.auth.setCredential(this.state.credential)
           }
-          if (response.data?.nextLink) {
-            sessionStorage.setItem('token', JSON.stringify(response.data?.token));
-            sessionStorage.setItem('nextLink', response.data.nextLink);
+          if(response.data?.nextLink){
+            this.auth.setToken(response.data.token);
+            this.auth.setNextDestination(response.data.nextLink);
           }
           this.handleRouting(response.data?.nextLink);
         },
