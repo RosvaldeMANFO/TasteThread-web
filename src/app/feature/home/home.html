@@ -6,9 +6,9 @@
             <div class="card shadow-md w-full rounded-md p-2 flex-1 min-h-0 overflow-hidden">
                 <app-recipe-list [state]="state.recipeListState" (loadMore)="loadMoreRecipes()"
                     (search)="searchRecipes($event)" (loadMoreSearches)="loadMoreSearchResults()"
-                    (refresh)="refreshRecipes()" (reveal)="revealRecipe($event)"
-                    (edit)="editRecipe($event)"
-                    (delete)="deleteRecipe($event)"></app-recipe-list>
+                    (refresh)="refreshRecipes()" (reveal)="revealRecipe($event)" (edit)="editRecipe($event)"
+                    (delete)="deleteRecipe($event)"
+                    (toggleUnapprovedFilter)="togglePendingFilter($event)"></app-recipe-list>
             </div>
         </div>
         <div class="flex-1 min-w-sm md:h-full h-auto md:border-l transition-transform duration-300 flex flex-col overflow-hidden"
@@ -22,11 +22,10 @@
                     </h2>
                     <div class="flex gap-2">
                         @if(!state.recipeListState.selectedFeed.recipe.approved) {
-                        <button mat-fab color="primary" class="bg-primary-light z-50 
-                        rounded-md flex items-center justify-center p-1 text-on-primary-light" (click)="approveRecipe()">
-                            <mat-icon>check</mat-icon>
+                        <app-custom-button icon="check" variant="primary"
+                            (click)="approveRecipe()">
                             Approve
-                        </button>
+                        </app-custom-button>
                         }
                         <button mat-icon-button class="text-primary-light" (click)="closeFeedDetail()">
                             <mat-icon>close</mat-icon>

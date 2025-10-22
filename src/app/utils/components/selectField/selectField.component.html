@@ -1,4 +1,5 @@
-<mat-form-field [appearance]="'outline'" [class]="" class="w-full">
+<mat-form-field [appearance]="'outline'" [class]="" 
+class="w-full ">
   @if (label) {
     <mat-label>{{ label }}</mat-label>
   }
@@ -9,7 +10,6 @@
     [multiple]="multiple"
     [panelClass]="'!bg-primary-container-light'"
     [disabled]="disabled"
-    [class]="'!px-2 !custom-scrollbar'"
   >
     @for (opt of options; track opt.value) {
       <mat-option [value]="opt.value">{{ opt.label }}</mat-option>

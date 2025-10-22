@@ -25,16 +25,17 @@ export class HomeService {
         );
     }
 
-    getRecipes(offset: number) {
+    getRecipes(offset: number, pendingOnly: boolean) {
         return this.http.get<RequestResult<RecipeModel[]>>(
-            `${environment.apiUrl}/recipes`,
+            `${environment.apiUrl}/admin/recipes`,
             {
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 params: {
                     offset: offset.toString(),
-                    limit: "20"
+                    limit: "20",
+                    pending: pendingOnly
                 }
             }
         ).pipe(
@@ -59,7 +60,7 @@ export class HomeService {
     }
 
 
-    searchRecipes(term: string, offset: number) {
+    searchRecipes(term: string, offset: number, pendingOnly: boolean) {
         const filter: FilterDTO = {
             query: term,
             origin: term,
@@ -68,7 +69,7 @@ export class HomeService {
             cookTime: parseInt(term) || undefined
         };
         return this.http.post<RequestResult<RecipeModel[]>>(
-            `${environment.apiUrl}/recipes/search`,
+            `${environment.apiUrl}/admin/search`,
             filter,
             {
                 headers: {
@@ -76,7 +77,8 @@ export class HomeService {
                 },
                 params: {
                     offset: offset.toString(),
-                    limit: "20"
+                    limit: "20",
+                    pending: pendingOnly
                 }
             }
         ).pipe(

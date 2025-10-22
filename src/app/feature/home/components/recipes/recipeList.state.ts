@@ -7,4 +7,11 @@ export class RecipeListState {
     error: string | null = null;
     searchTerm: string = '';
     selectedFeed: Feed | null = null;
+    showUnapprovedOnly: boolean = false;
+
+    constructor(data?: Partial<RecipeListState>) {
+        if (data) {
+            Object.assign(this, data);
+        }
+    }
 }

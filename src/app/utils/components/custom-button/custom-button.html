@@ -1,0 +1,7 @@
+<button [class]="getButtonClasses()" [disabled]="disabled" [type]="buttonType"
+    (click)="handleClick()">
+    @if(icon) {
+    <mat-icon>{{ icon }}</mat-icon>
+    }
+    <ng-content></ng-content>
+</button>

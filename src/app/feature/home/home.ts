@@ -13,10 +13,11 @@ import { FeedDetails } from "./components/feedDetails/feedDetails.component";
 import { RecipeModel } from '../../core/model/recipe/recipe.model';
 import { recipeModelToDTO, recipeModelToFeed } from './model/recipe.mapper';
 import { ConfirmDialog } from '../../utils/components/confirm-dialog/confirm-dialog';
+import { CustomButtonComponent } from "../../utils/components/custom-button/custom-button";
 
 @Component({
   selector: 'app-home',
-  imports: [Header, RecipeList, MatIcon, FeedDetails],
+  imports: [Header, RecipeList, MatIcon, FeedDetails, CustomButtonComponent],
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
@@ -47,7 +48,9 @@ export class Home implements OnInit {
 
   private loadRecipes(offset: number = 0) {
     this.state.recipeListState.isLoading = true;
-    this.service.getRecipes(offset).subscribe({
+    this.service.getRecipes(
+      offset, this.state.recipeListState.showUnapprovedOnly
+    ).subscribe({
       next: (response) => {
         this.state.recipeListState = {
           ...this.state.recipeListState,
@@ -55,8 +58,9 @@ export class Home implements OnInit {
           isLoading: false
         };
       },
-      error: (result) => {
-        this.state.recipeListState.error = result.error.message;
+      error: (error) => {
+        console.log(error);
+        this.state.recipeListState.error = error.message;
         this.state.recipeListState.isLoading = false;
       }
     });
@@ -70,7 +74,9 @@ export class Home implements OnInit {
   searchRecipes(filter: string) {
     this.state.recipeListState.isLoading = true;
     this.state.recipeListState.searchTerm = filter;
-    this.service.searchRecipes(filter, 0).subscribe({
+    this.service.searchRecipes(
+      filter, 0, this.state.recipeListState.showUnapprovedOnly
+    ).subscribe({
       next: (response) => {
         console.log(response);
         this.state.recipeListState = {
@@ -90,7 +96,8 @@ export class Home implements OnInit {
     this.state.recipeListState.isLoading = true;
     this.service.searchRecipes(
       this.state.recipeListState.searchTerm,
-      this.state.recipeListState.recipes.length
+      this.state.recipeListState.recipes.length,
+      this.state.recipeListState.showUnapprovedOnly
     ).subscribe({
       next: (response) => {
         this.state.recipeListState = {
@@ -106,10 +113,12 @@ export class Home implements OnInit {
     });
   }
 
-  refreshRecipes() {
+  refreshRecipes(pendingOnly: boolean = false) {
     this.state = {
       ...this.state,
-      recipeListState: new RecipeListState()
+      recipeListState: new RecipeListState({
+        showUnapprovedOnly: pendingOnly
+      })
     };
     this.loadRecipes();
   }
@@ -239,5 +248,9 @@ export class Home implements OnInit {
         console.error('Error deleting recipe:', err);
       }
     });
+  }
+
+  togglePendingFilter(showUnapprovedOnly: boolean) {
+    this.refreshRecipes(showUnapprovedOnly);
   }
 }
