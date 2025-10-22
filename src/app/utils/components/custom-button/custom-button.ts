@@ -10,6 +10,7 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './custom-button.html',
 })
 export class CustomButtonComponent {
+  @Input() customClass?: string;
   @Input() icon?: string;
   @Input() variant: 'primary' | 'secondary' | 'danger' | 'success' = 'primary';
   @Input() disabled = false;
@@ -32,6 +33,6 @@ export class CustomButtonComponent {
       success: 'bg-green-600 text-white hover:bg-green-700'
     };
 
-    return `${baseClasses} ${variantClasses[this.variant]}`;
+    return `${baseClasses} ${variantClasses[this.variant]} ${this.customClass ?? ''}`;
   }
 }

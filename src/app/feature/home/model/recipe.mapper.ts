@@ -12,14 +12,11 @@ import { longToLocalDateTime } from "../../../utils/datetime.util";
 
 
 export function recipeModelToFeed(model: RecipeModel): Feed {
-  const likes: any[] = Array.isArray((model as any).likes) ? (model as any).likes : [];
-  const commentsRaw: any[] = Array.isArray((model as any).comments) ? (model as any).comments : [];
-
-  const likeUserNames: string[] = likes
+  const likeUserNames: string[] = model.likes
     .map(l => l?.user?.name)
     .filter((n: any): n is string => typeof n === 'string');
 
-  const comments: FeedComment[] = commentsRaw.map(c =>
+  const comments: FeedComment[] = model.comments.map(c =>
     new FeedComment({
       author: c?.author?.name ?? '',
       content: c?.content ?? '',
@@ -29,12 +26,12 @@ export function recipeModelToFeed(model: RecipeModel): Feed {
 
   const userEmail = sessionStorage.getItem('userEmail') || '';
   const isLiked =
-    !!userEmail && likes.some(l => (l?.user?.email as string | undefined) === userEmail);
+    !!userEmail && model.likes.some(l => (l?.user?.email as string | undefined) === userEmail);
 
   return new Feed({
     id: model.id,
     recipe: model,
-    likeCount: likes.length,
+    likeCount: model.likes.length,
     commentCount: comments.length,
     likes: likeUserNames,
     comments,

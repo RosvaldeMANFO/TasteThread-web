@@ -1,17 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule, JsonPipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { PasswordState } from './password.state';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ResetPasswordService } from './reset-password.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { RequestResult } from '../../core/model/requestResult.model';
-import { json } from 'stream/consumers';
-import { stringify } from 'querystring';
+import { CustomButtonComponent } from '../../utils/components/custom-button/custom-button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 @Component({
   selector: 'app-reset-password',
-  imports: [CommonModule, FormsModule, MatIconModule],
+  imports: [CommonModule, FormsModule, MatIconModule, CustomButtonComponent,
+    MatFormFieldModule
+  ],
   templateUrl: './reset-password.html',
 })
 export class ResetPassword implements OnInit {

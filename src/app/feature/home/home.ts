@@ -59,7 +59,6 @@ export class Home implements OnInit {
         };
       },
       error: (error) => {
-        console.log(error);
         this.state.recipeListState.error = error.message;
         this.state.recipeListState.isLoading = false;
       }
@@ -78,7 +77,6 @@ export class Home implements OnInit {
       filter, 0, this.state.recipeListState.showUnapprovedOnly
     ).subscribe({
       next: (response) => {
-        console.log(response);
         this.state.recipeListState = {
           ...this.state.recipeListState,
           recipes: response.data || [],
@@ -196,8 +194,10 @@ export class Home implements OnInit {
         .subscribe({
           next: _ => {
             this.refreshRecipes();
-            this.revealRecipe(this.state.recipeListState.recipes
+            if(this.state.recipeListState.selectedFeed){
+              this.revealRecipe(this.state.recipeListState.recipes
               .find(r => r.id === recipe.feedId)!);
+            }
           },
           error: (err) => { console.error('Error updating recipe:', err); }
         });
