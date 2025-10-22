@@ -88,14 +88,7 @@ export class HomeService {
 
     createRecipe(recipe: RecipeDTO) {
         if (recipe.image) {
-            const form = new FormData();
-
-            const { image, ...rest } = recipe as any;
-            form.append('recipe', JSON.stringify(rest));
-
-            const imageBlob = dataUrlToBlob(recipe.image);
-            form.append('image', imageBlob, 'image.jpg');
-
+            const form = this.buildMultipartFormData(recipe);
             return this.http.post<RequestResult<RecipeModel>>(
                 `${environment.apiUrl}/recipes`,
                 form,
@@ -111,10 +104,45 @@ export class HomeService {
         );
     }
 
+    updateRecipe(recipe: RecipeDTO) {
+        if (recipe.image) {
+            const form = this.buildMultipartFormData(recipe);
+            return this.http.put<RequestResult<RecipeModel>>(
+                `${environment.apiUrl}/recipes/${recipe.feedId}`,
+                form,
+            );
+        }
+        return this.http.put<RequestResult<RecipeModel>>(
+            `${environment.apiUrl}/recipes/${recipe.feedId}`,
+            recipe,
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+    }
+
+    private buildMultipartFormData(recipe: RecipeDTO): FormData {
+        const form = new FormData();
+        const { image, ...rest } = recipe as any;
+        form.append('recipe', JSON.stringify(rest));
+        const imageBlob = dataUrlToBlob(recipe.image || '');
+        form.append('image', imageBlob, 'image.jpg');
+        return form;
+    }
+
     approveRecipe(recipeId: string) {
         return this.http.post<RequestResult<void>>(
             `${environment.apiUrl}/admin/approve/${recipeId}`,
             {},
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+    }
+
+    deleteRecipe(recipeId: string) {
+        return this.http.delete<RequestResult<void>>(
+            `${environment.apiUrl}/recipes/${recipeId}`,
             {
                 headers: { 'Content-Type': 'application/json' },
             }

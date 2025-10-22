@@ -3,7 +3,9 @@
     <label class="block text-sm mb-2">Photo</label>
     <input type="file" accept="image/*" (change)="onFileChange($event)" />
   </div>
-  <div *ngIf="preview" class="mt-3">
-    <img [src]="preview" alt="preview" class="max-h-60 rounded-lg border" />
+  @if(preview) {
+  <div class="mt-3">
+    <img [src]="preview | cacheBust" alt="preview" class="max-h-60 rounded-lg border" />
   </div>
+  }
 </div>

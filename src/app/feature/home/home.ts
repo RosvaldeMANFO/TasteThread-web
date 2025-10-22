@@ -7,11 +7,12 @@ import { RecipeListState } from './components/recipes/recipeList.state';
 import { delay } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RecipeDTO } from '../../core/model/recipe/recipe.dto';
-import { RecipeEditingDialogComponent } from './components/recipeEditing/recipeEditingDialog.component';
+import { RecipeEditingDialogComponent, RecipeEditingDialogData } from './components/recipeEditing/recipeEditingDialog.component';
 import { MatIcon } from '@angular/material/icon';
 import { FeedDetails } from "./components/feedDetails/feedDetails.component";
 import { RecipeModel } from '../../core/model/recipe/recipe.model';
-import { recipeModelToFeed } from './model/recipe.mapper';
+import { recipeModelToDTO, recipeModelToFeed } from './model/recipe.mapper';
+import { ConfirmDialog } from '../../utils/components/confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-home',
@@ -117,13 +118,23 @@ export class Home implements OnInit {
     const ref = this.openRecipeEditingDialog(
       {
         title: 'Create recipe',
-        message: 'Recipe editor coming soon.',
-        confirmText: 'Got it'
       },
     );
 
     ref.afterClosed().subscribe(payload => {
       this.handleRecipeCreated(payload)
+    });
+  }
+
+  editRecipe(recipe: RecipeModel) {
+    const ref = this.openRecipeEditingDialog(
+      {
+        recipe: recipeModelToDTO(recipe),
+        title: 'Edit recipe',
+      },
+    );
+    ref.afterClosed().subscribe(payload => {
+      this.handleRecipeUpdated(payload)
     });
   }
 
@@ -147,7 +158,7 @@ export class Home implements OnInit {
     }
   }
 
-  private openRecipeEditingDialog(data: any): MatDialogRef<RecipeEditingDialogComponent> {
+  private openRecipeEditingDialog(data: RecipeEditingDialogData): MatDialogRef<RecipeEditingDialogComponent> {
     return this.dialog.open(RecipeEditingDialogComponent, {
       width: '900px',
       maxWidth: '95vw',
@@ -160,14 +171,26 @@ export class Home implements OnInit {
 
   private handleRecipeCreated(recipe?: RecipeDTO) {
     if (recipe) {
-      console.log('Dialog closed with recipe data:', recipe);
       this.service.createRecipe(recipe)
         .subscribe({
-          next: data => {
+          next: _ => {
             this.refreshRecipes();
-            console.log('Recipe created successfully:', data);
           },
           error: (err) => { console.error('Error creating recipe:', err); }
+        });
+    }
+  }
+
+  private handleRecipeUpdated(recipe?: RecipeDTO) {
+    if (recipe) {
+      this.service.updateRecipe(recipe)
+        .subscribe({
+          next: _ => {
+            this.refreshRecipes();
+            this.revealRecipe(this.state.recipeListState.recipes
+              .find(r => r.id === recipe.feedId)!);
+          },
+          error: (err) => { console.error('Error updating recipe:', err); }
         });
     }
   }
@@ -179,22 +202,42 @@ export class Home implements OnInit {
         .subscribe({
           next: () => {
             this.refreshRecipes();
-            let selectedFeed = recipeModelToFeed(
-              this.state.recipeListState.recipes.find(r => r.id === updateRecipeId)!
-            );
-            this.state = {
-              ...this.state,
-              recipeListState: {
-                ...this.state.recipeListState,
-                selectedFeed
-              }
-            };
+            let selectedFeed = this.state.recipeListState.recipes
+              .find(r => r.id === updateRecipeId)!;
+            this.revealRecipe(selectedFeed);
           },
           error: (err) => {
             console.error('Error approving recipe:', err);
           }
         }
-      );
+        );
     }
+  }
+
+  deleteRecipe(recipeId: string) {
+    const dialogRef = this.dialog.open(ConfirmDialog, {
+      data: {
+        title: 'Delete Recipe',
+        message: 'Are you sure you want to delete this recipe? This action cannot be undone.',
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result === true) {
+        this.confirmDeleteRecipe(recipeId);
+      }
+    });
+  }
+
+  private confirmDeleteRecipe(recipeId: string) {
+    this.service.deleteRecipe(recipeId).subscribe({
+      next: () => {
+        this.refreshRecipes();
+        this.closeFeedDetail();
+      },
+      error: (err) => {
+        console.error('Error deleting recipe:', err);
+      }
+    });
   }
 }

@@ -1,0 +1,25 @@
+
+<div class="bg-white !rounded-lg shadow-xl max-w-md w-full p-6">
+  <div class="flex items-start gap-4 mb-4">
+    <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
+      <mat-icon class="!text-red-400">warning</mat-icon>
+    </div>
+    <div class="flex-1">
+      <h2 class="text-xl font-semibold text-gray-900 mb-2">{{ data.title }}</h2>
+      <p class="text-gray-600">{{ data.message }}</p>
+    </div>
+  </div>
+  
+  <div class="flex justify-end gap-3 mt-6">
+    <button 
+      (click)="onCancel()"
+      class="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md bg-gray-50 transition-colors">
+      {{ 'Cancel' }}
+    </button>
+    <button 
+      (click)="onConfirm()"
+      class="px-4 py-2 !text-red-400 hover:bg-red-100 rounded-md bg-red-50 transition-colors">
+      {{ 'Confirm' }}
+    </button>
+  </div>
+</div>

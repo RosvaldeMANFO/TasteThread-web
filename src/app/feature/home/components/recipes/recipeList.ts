@@ -41,7 +41,8 @@ export class RecipeList implements AfterViewInit {
   @Output() loadMoreSearches: EventEmitter<void> = new EventEmitter<void>();
   @Output() refresh: EventEmitter<void> = new EventEmitter<void>(); 
   @Output() reveal: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
-  @Output() delete: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
+  @Output() delete: EventEmitter<string> = new EventEmitter<string>();
+  @Output() edit: EventEmitter<RecipeModel> = new EventEmitter<RecipeModel>();
 
   displayedColumns: string[] = ['name', 'mealType', 'origin', 'author', 'actions'];
   dataSource = new MatTableDataSource<RecipeModel>([]);
@@ -70,8 +71,12 @@ export class RecipeList implements AfterViewInit {
     this.reveal.emit(recipe);
   }
 
+  editRecipe(recipe: RecipeModel) {
+    this.edit.emit(recipe);
+  }
+
   deleteRecipe(recipe: RecipeModel) {
-    this.delete.emit(recipe);
+    this.delete.emit(recipe.id);
   }
 
   applyFilter(event: Event) {
