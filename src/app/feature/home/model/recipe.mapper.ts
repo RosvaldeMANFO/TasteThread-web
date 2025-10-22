@@ -11,7 +11,7 @@ import { longToLocalDateTime } from "../../../utils/datetime.util";
 
 
 
-export function recipeModelToFeed(model: RecipeModel): Feed {
+export function recipeModelToFeed(model: RecipeModel, userEmail: string | null): Feed {
   const likeUserNames: string[] = model.likes
     .map(l => l?.user?.name)
     .filter((n: any): n is string => typeof n === 'string');
@@ -24,7 +24,6 @@ export function recipeModelToFeed(model: RecipeModel): Feed {
     })
   );
 
-  const userEmail = sessionStorage.getItem('userEmail') || '';
   const isLiked =
     !!userEmail && model.likes.some(l => (l?.user?.email as string | undefined) === userEmail);
 

@@ -1,10 +1,11 @@
 import { Routes } from '@angular/router';
 import { AccountActivation } from './feature/account-activation/account-activation';
-import { accountActivationGuard } from './core/account-activation-guard';
-import { Authentication } from './feature/authentication/authentication';
+import { accountActivationGuard } from './core/guards/account-activation-guard';
+import { Login } from './feature/login/login';
 import { Dashboard } from './feature/dashboard/dashboard';
 import { LandingPage } from './feature/landing-page/landing-page';
 import { ResetPassword } from './feature/reset-password/reset-password';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
     {
@@ -13,12 +14,13 @@ export const routes: Routes = [
         pathMatch: 'full'
     },
     {
-        path: 'auth',
-        component: Authentication
+        path: 'login',
+        component: Login
     },
     {
         path: 'dashboard',
-        component: Dashboard
+        component: Dashboard,
+        canActivate: [authGuard]
     },
     {
         path: 'landing',

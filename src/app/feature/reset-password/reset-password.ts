@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CustomButtonComponent } from '../../utils/components/custom-button/custom-button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { AuthService } from '../../core/services/auth.service';
 
 
 @Component({
@@ -29,7 +30,7 @@ export class ResetPassword implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private resetPasswordService: ResetPasswordService
+    private service: ResetPasswordService,
   ) { }
 
   ngOnInit(): void {
@@ -50,7 +51,7 @@ export class ResetPassword implements OnInit {
       return;
     }
     this.state.loading = true;
-    this.resetPasswordService.resetPassword(this.state.token, this.state.newPassword).subscribe({
+    this.service.resetPassword(this.state.token, this.state.newPassword).subscribe({
       next: (result) => {
         this.state = {
           newPassword: '',

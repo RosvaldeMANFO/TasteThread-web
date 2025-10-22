@@ -8,12 +8,12 @@
         <form class="w-full" #loginForm="ngForm" (ngSubmit)="login(loginForm)">
             <mat-form-field appearance="outline" class="w-full mb-4">
                 <mat-label>Email</mat-label>
-                <input matInput type="email" name="email" [(ngModel)]="state.user.email" required />
+                <input matInput type="email" name="email" [(ngModel)]="state.credential.email" required />
             </mat-form-field>
 
             <mat-form-field appearance="outline" class="w-full mb-4">
                 <mat-label>Password</mat-label>
-                <input matInput [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="state.user.password" required />
+                <input matInput [type]="showPassword ? 'text' : 'password'" name="password" [(ngModel)]="state.credential.password" required />
                 <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()"
                     class="text-primary-light">
                     <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>

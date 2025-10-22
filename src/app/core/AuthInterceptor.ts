@@ -8,20 +8,26 @@ import { catchError, filter, take, switchMap, map, tap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { Token } from './model/login.model';
 import { RequestResult } from './model/requestResult.model';
+import { AuthService } from './services/auth.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private auth: AuthService
+  ) { }
 
   private isRefreshing = false;
   private tokenSubject = new BehaviorSubject<Token | null>(null);
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token: Token = JSON.parse(sessionStorage.getItem('token') || 'null');
+    const token = this.auth.getToken();
     let authReq = req;
     if (token) {
       authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token.accessToken}` } });
+    } else {
+      this.auth.logout();
     }
 
     return next.handle(authReq).pipe(
@@ -48,7 +54,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }),
         catchError(err => {
           this.isRefreshing = false;
-          this.clearTokens();
+          this.auth.logout();
           return throwError(() => err);
         })
       );
@@ -65,7 +71,7 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   refreshToken(): Observable<Token> {
-    const token: Token = JSON.parse(sessionStorage.getItem('token') || '{}');
+    const token: Token = this.auth.getToken()!;
     console.log('Refreshing token', token);
     return this.http.post<RequestResult<Token>>(
       `${environment.apiUrl}/auth/refresh`,
@@ -80,9 +86,5 @@ export class AuthInterceptor implements HttpInterceptor {
         sessionStorage.setItem('token', JSON.stringify(token));
       }),
     );
-  }
-
-  clearTokens() {
-    sessionStorage.removeItem('token');
   }
 }

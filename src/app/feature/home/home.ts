@@ -14,6 +14,7 @@ import { RecipeModel } from '../../core/model/recipe/recipe.model';
 import { recipeModelToDTO, recipeModelToFeed } from './model/recipe.mapper';
 import { ConfirmDialog } from '../../utils/components/confirm-dialog/confirm-dialog';
 import { CustomButtonComponent } from "../../utils/components/custom-button/custom-button";
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,11 @@ import { CustomButtonComponent } from "../../utils/components/custom-button/cust
 export class Home implements OnInit {
   state: HomeState = new HomeState();
 
-  constructor(private service: HomeService, private dialog: MatDialog) { }
+  constructor(
+    private service: HomeService,
+    private dialog: MatDialog,
+    private auth: AuthService
+  ) { }
 
   ngOnInit() {
     this.loadStatsData();
@@ -146,11 +151,12 @@ export class Home implements OnInit {
   }
 
   revealRecipe(recipe: RecipeModel) {
+    let userEmail = this.auth.getCredential()?.email || null;
     this.state = {
       ...this.state,
       recipeListState: {
         ...this.state.recipeListState,
-        selectedFeed: recipeModelToFeed(recipe)
+        selectedFeed: recipeModelToFeed(recipe, userEmail)
       }
     }
   }
@@ -194,9 +200,9 @@ export class Home implements OnInit {
         .subscribe({
           next: _ => {
             this.refreshRecipes();
-            if(this.state.recipeListState.selectedFeed){
+            if (this.state.recipeListState.selectedFeed) {
               this.revealRecipe(this.state.recipeListState.recipes
-              .find(r => r.id === recipe.feedId)!);
+                .find(r => r.id === recipe.feedId)!);
             }
           },
           error: (err) => { console.error('Error updating recipe:', err); }
