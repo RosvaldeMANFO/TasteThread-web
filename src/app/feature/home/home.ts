@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { HomeState } from './home.state';
 import { HomeService } from './home.service';
 import { Header } from './components/header/header.component';
 import { RecipeList } from './components/recipes/recipeList';
 import { RecipeListState } from './components/recipes/recipeList.state';
-import { delay } from 'rxjs';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { RecipeDTO } from '../../core/model/recipe/recipe.dto';
 import { RecipeEditingDialogComponent, RecipeEditingDialogData } from './components/recipeEditing/recipeEditingDialog.component';
@@ -15,10 +14,14 @@ import { recipeModelToDTO, recipeModelToFeed } from './model/recipe.mapper';
 import { ConfirmDialog } from '../../utils/components/confirm-dialog/confirm-dialog';
 import { CustomButtonComponent } from "../../utils/components/custom-button/custom-button";
 import { AuthService } from '../../core/services/auth.service';
+import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-home',
-  imports: [Header, RecipeList, MatIcon, FeedDetails, CustomButtonComponent],
+  imports: [Header, RecipeList, MatIcon, FeedDetails, CustomButtonComponent,
+    MatToolbarModule],
   templateUrl: './home.html',
 })
 export class Home implements OnInit {
@@ -27,12 +30,29 @@ export class Home implements OnInit {
   constructor(
     private service: HomeService,
     private dialog: MatDialog,
-    private auth: AuthService
+    private auth: AuthService,
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) { }
 
   ngOnInit() {
+    this.checkPlatformAndAuthentication();
     this.loadStatsData();
     this.loadRecipes();
+  }
+
+  logout() {
+    this.auth.logout();
+  }
+
+  private checkPlatformAndAuthentication() {
+    if (!isPlatformBrowser(this.platformId)) {
+      this.router.navigate(['/landing'], { replaceUrl: true });
+    } else {
+      if (!this.auth.getToken()) {
+        this.router.navigate(['/login'], { replaceUrl: true });
+      }
+    }
   }
 
   private loadStatsData() {
@@ -51,15 +71,29 @@ export class Home implements OnInit {
     });
   }
 
-  private loadRecipes(offset: number = 0) {
+  private loadRecipes(offset: number = 0, reselectId?: string | null) {
     this.state.recipeListState.isLoading = true;
     this.service.getRecipes(
       offset, this.state.recipeListState.showUnapprovedOnly
     ).subscribe({
       next: (response) => {
+        const recipes = response.data || [];
+
+        let selectedFeed = this.state.recipeListState.selectedFeed;
+        if (reselectId) {
+          const found = recipes.find(r => r.id === reselectId);
+          if (found) {
+            const userEmail = this.auth.getCredential()?.email || null;
+            selectedFeed = recipeModelToFeed(found, userEmail);
+          } else {
+            selectedFeed = null;
+          }
+        }
+
         this.state.recipeListState = {
           ...this.state.recipeListState,
-          recipes: response.data || [],
+          recipes,
+          selectedFeed,
           isLoading: false
         };
       },
@@ -117,13 +151,16 @@ export class Home implements OnInit {
   }
 
   refreshRecipes(pendingOnly: boolean = false) {
+    const selectedFeedId = this.state.recipeListState.selectedFeed?.recipe.id || null;
+
     this.state = {
       ...this.state,
       recipeListState: new RecipeListState({
         showUnapprovedOnly: pendingOnly
       })
     };
-    this.loadRecipes();
+
+    this.loadRecipes(0, selectedFeedId);
   }
 
   createRecipe() {
@@ -200,10 +237,6 @@ export class Home implements OnInit {
         .subscribe({
           next: _ => {
             this.refreshRecipes();
-            if (this.state.recipeListState.selectedFeed) {
-              this.revealRecipe(this.state.recipeListState.recipes
-                .find(r => r.id === recipe.feedId)!);
-            }
           },
           error: (err) => { console.error('Error updating recipe:', err); }
         });
@@ -212,14 +245,10 @@ export class Home implements OnInit {
 
   approveRecipe() {
     if (this.state.recipeListState.selectedFeed) {
-      let updateRecipeId = this.state.recipeListState.selectedFeed?.recipe.id;
-      this.service.approveRecipe(updateRecipeId)
+      this.service.approveRecipe(this.state.recipeListState.selectedFeed.recipe.id)
         .subscribe({
           next: () => {
             this.refreshRecipes();
-            let selectedFeed = this.state.recipeListState.recipes
-              .find(r => r.id === updateRecipeId)!;
-            this.revealRecipe(selectedFeed);
           },
           error: (err) => {
             console.error('Error approving recipe:', err);
@@ -248,7 +277,9 @@ export class Home implements OnInit {
     this.service.deleteRecipe(recipeId).subscribe({
       next: () => {
         this.refreshRecipes();
-        this.closeFeedDetail();
+        if (recipeId === this.state.recipeListState.selectedFeed?.recipe.id) {
+          this.closeFeedDetail();
+        }
       },
       error: (err) => {
         console.error('Error deleting recipe:', err);

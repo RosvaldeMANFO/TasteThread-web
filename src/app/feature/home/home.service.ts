@@ -46,7 +46,7 @@ export class HomeService {
     }
 
     private mapRecipe(response: RequestResult<RecipeModel[]>) {
-        let userEmail = sessionStorage.getItem('userEmail');
+        let userEmail = localStorage.getItem('userEmail');
         if (response.data) {
             return {
                 ...response,
