@@ -69,6 +69,7 @@ export class Login implements OnInit {
       .subscribe({
         next: (response) => {
           this.state.loading = false;
+          localStorage.setItem('userEmail', this.state.credential.email);
           if (this.state.rememberMe) {
             this.auth.setCredential(this.state.credential)
           }

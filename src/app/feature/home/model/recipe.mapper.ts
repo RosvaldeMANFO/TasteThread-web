@@ -36,7 +36,6 @@ export function recipeModelToFeed(model: RecipeModel, userEmail: string | null):
     comments,
     authorImageUrl: (model.author as any)?.imageUrl ?? null,
     isLiked,
-    canEdit: model.author.email === userEmail
   });
 }
 

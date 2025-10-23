@@ -2,10 +2,10 @@ import { Routes } from '@angular/router';
 import { AccountActivation } from './feature/account-activation/account-activation';
 import { accountActivationGuard } from './core/guards/account-activation-guard';
 import { Login } from './feature/login/login';
-import { Dashboard } from './feature/dashboard/dashboard';
 import { LandingPage } from './feature/landing-page/landing-page';
 import { ResetPassword } from './feature/reset-password/reset-password';
 import { authGuard } from './core/guards/auth-guard';
+import { Home } from './feature/home/home';
 
 export const routes: Routes = [
     {
@@ -18,8 +18,8 @@ export const routes: Routes = [
         component: Login
     },
     {
-        path: 'dashboard',
-        component: Dashboard,
+        path: 'home',
+        component: Home,
         canActivate: [authGuard]
     },
     {
