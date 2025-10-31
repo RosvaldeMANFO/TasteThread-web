@@ -1,5 +1,5 @@
 export class ActivationState {
-    success!: boolean;
-    message!: string;
+    success: boolean = false;
+    message: string = "";
     appName?: string = 'TasteThread';
 }
