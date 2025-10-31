@@ -2,10 +2,9 @@ name: Deploy to Cloud Run
 
 on:
   pull_request:
-    types:
-      - closed
+    types: [closed]
     branches:
-      - main
+    - main
 
 env:
   PROJECT_ID: ${{ vars.PROJECT_ID }}
@@ -15,7 +14,7 @@ env:
 
 jobs:
   deploy:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
