@@ -1,18 +1,23 @@
-<div class="min-h-screen flex flex-col gap-4 items-center justify-center bg-background-light">
-    <div class="bg-surface-light shadow-md text-on-surface-light sticky top-0 z-10 w-full flex justify-between items-center">
-        <img src="assets/logo.png" alt="App Logo" class="h-8" />
-        <h1 class="text-primary-light">{{ state.appName }}</h1>
+<div class="min-h-screen flex flex-col bg-background-light">
+    <div class="bg-surface-light shadow-md sticky top-0 z-10 w-full px-6 py-4">
+        <div class="max-w-7xl mx-auto flex items-center gap-3">
+            <img src="assets/logo.png" alt="App Logo" class="h-10 w-10 object-contain" />
+            <h1 class="text-2xl font-bold text-primary-light">{{ state.appName }}</h1>
+        </div>
     </div>
-    <div class="w-full max-w-sm bg-surface-light rounded-xl shadow-lg p-8 flex flex-col items-center animate-fade-in">
-        @if (state.success) {
-        <mat-icon class="!text-primary-light text-4xl mb-2">check_circle</mat-icon>
-        <h2 class="text-xl font-bold mb-2 text-primary-light">Success</h2>
-        <p class="text-base text-on-surface-light">{{ state.message }}</p>
-        }
-        @else {
-        <mat-icon class="!text-error-light text-4xl mb-2">cancel</mat-icon>
-        <h2 class="text-xl font-bold mb-2 text-error-light">Failure</h2>
-        <p class="text-base text-on-error-container-light">{{ state.message }}</p>
-        }
+
+    <div class="flex-1 flex items-center justify-center p-4">
+        <div class="w-full max-w-md bg-surface-light rounded-xl shadow-lg p-8 flex flex-col items-center animate-fade-in">
+            @if (state.success) {
+            <mat-icon class="!text-primary-light !text-6xl mb-4">check_circle</mat-icon>
+            <h2 class="text-2xl font-bold mb-3 text-primary-light">Success</h2>
+            <p class="text-center text-base text-on-surface-light">{{ state.message }}</p>
+            }
+            @else {
+            <mat-icon class="!text-error-light !text-6xl mb-4">cancel</mat-icon>
+            <h2 class="text-2xl font-bold mb-3 text-error-light">Failure</h2>
+            <p class="text-center text-base text-on-surface-light">{{ state.message }}</p>
+            }
+        </div>
     </div>
 </div>
