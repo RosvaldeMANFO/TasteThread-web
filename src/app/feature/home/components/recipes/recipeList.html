@@ -1,7 +1,7 @@
 <div class="relative min-h-fulll mat-elevation-z8">
   @if(state?.isLoading) {
   <div class="absolute top-0 left-0 right-0 bottom-14 bg-black/15 z-10 flex flex-col items-center justify-center">
-    <mat-spinner diameter="40" color="primary"></mat-spinner>
+    <app-spinner class="h-8" [customClass]="'fill-on-primary-light'"></app-spinner>
   </div>
   }
 
