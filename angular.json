@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cook": {
+    "tasteThread": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -21,7 +21,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "assets"
               }
             ],
             "styles": [
@@ -44,11 +45,11 @@
               "extractLicenses": false,
               "sourceMap": true,
               "fileReplacements": [
-              {
-                "replace": "src/environments/environment.ts",
-                "with": "src/environments/development.ts"
-              }
-            ]
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/development.ts"
+                }
+              ]
             }
           },
           "defaultConfiguration": "production"
@@ -57,10 +58,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "cook:build:production"
+              "buildTarget": "tasteThread:build:production"
             },
             "development": {
-              "buildTarget": "cook:build:development"
+              "buildTarget": "tasteThread:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -79,7 +80,8 @@
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
+                "input": "public",
+                "output": "assets"
               }
             ],
             "styles": [
