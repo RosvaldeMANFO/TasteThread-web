@@ -2,89 +2,170 @@
 @import "tailwindcss";
 
 @layer utilities {
-	.animate-fade-in {
-		animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-	}
-	@keyframes fadeIn {
-		from {
-			opacity: 0;
-			transform: translateY(30px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
+  .animate-fade-in {
+    animation: fadeIn 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 }
+
+textarea {
+  field-sizing: content;
+}
+
+/* Global Material Form Field Styles - Rounded borders */
+.mat-mdc-text-field-wrapper {
+  border-radius: 12px !important;
+  padding: 2px 0px !important;
+}
+
+.mdc-notched-outline__leading {
+  border-top-left-radius: 12px !important;
+  border-bottom-left-radius: 12px !important;
+  border-right: none !important;
+  width: 12px !important; /* Match the border radius */
+}
+
+.mdc-notched-outline__trailing {
+  border-top-right-radius: 12px !important;
+  border-bottom-right-radius: 12px !important;
+}
+
+.mdc-notched-outline__notch {
+  border-right: none !important;
+  border-left: none !important;
+}
+
+/* Add horizontal padding to input/select text */
+.mat-mdc-form-field .mat-mdc-input-element,
+.mat-mdc-form-field .mat-mdc-select {
+  padding-left: 16px !important;
+  padding-right: 16px !important;
+}
+
+
+/* Adjust label position to account for padding */
+.mat-mdc-form-field .mat-mdc-floating-label {
+  left: 16px !important;
+}
+
+/* Optional: Style focused state */
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-focused .mdc-notched-outline__trailing {
+  border-color: var(--color-primary-light) !important;
+  border-width: 2px !important;
+}
+
+/* Optional: Style error state */
+.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__leading,
+.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__notch,
+.mat-mdc-form-field.mat-form-field-invalid .mdc-notched-outline__trailing {
+  border-color: var(--color-error-light) !important;
+}
+
+/* Material Select Dropdown Panel - Rounded borders and themed scrollbar */
+.mat-mdc-select-panel {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+::-webkit-scrollbar {
+  width: 4px !important;
+  height: 4px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-surface-container-light) !important;
+  border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-primary-light) !important;
+  border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary-container-light) !important;
+}
+
 @theme {
-	--color-primary-light: #8F4C35;
-	--color-on-primary-light: #FFFFFF;
-	--color-primary-container-light: #FFDBD0;
-	--color-on-primary-container-light: #723520;
-	--color-secondary-light: #77574D;
-	--color-on-secondary-light: #FFFFFF;
-	--color-secondary-container-light: #FFDBD0;
-	--color-on-secondary-container-light: #5D4036;
-	--color-tertiary-light: #6A5E2F;
-	--color-on-tertiary-light: #FFFFFF;
-	--color-tertiary-container-light: #F3E2A7;
-	--color-on-tertiary-container-light: #51461A;
-	--color-error-light: #BA1A1A;
-	--color-on-error-light: #FFFFFF;
-	--color-error-container-light: #FFDAD6;
-	--color-on-error-container-light: #93000A;
-	--color-background-light: #FFF8F6;
-	--color-on-background-light: #231917;
-	--color-surface-light: #FFF8F6;
-	--color-on-surface-light: #231917;
-	--color-surface-variant-light: #F5DED7;
-	--color-on-surface-variant-light: #53433F;
-	--color-outline-light: #85736E;
-	--color-outline-variant-light: #D8C2BB;
-	--color-scrim-light: #000000;
-	--color-inverse-surface-light: #392E2B;
-	--color-inverse-on-surface-light: #FFEDE8;
-	--color-inverse-primary-light: #FFB59D;
-	--color-surface-dim-light: #E8D6D1;
-	--color-surface-bright-light: #FFF8F6;
-	--color-surface-container-lowest-light: #FFFFFF;
-	--color-surface-container-low-light: #FFF1ED;
-	--color-surface-container-light: #FCEAE5;
-	--color-surface-container-high-light: #F7E4DF;
-	--color-surface-container-highest-light: #F1DFDA;
-	--color-primary-dark: #FFB59D;
-	--color-on-primary-dark: #55200C;
-	--color-primary-container-dark: #723520;
-	--color-on-primary-container-dark: #FFDBD0;
-	--color-secondary-dark: #E7BDB0;
-	--color-on-secondary-dark: #442A21;
-	--color-secondary-container-dark: #5D4036;
-	--color-on-secondary-container-dark: #FFDBD0;
-	--color-tertiary-dark: #D6C68D;
-	--color-on-tertiary-dark: #393005;
-	--color-tertiary-container-dark: #51461A;
-	--color-on-tertiary-container-dark: #F3E2A7;
-	--color-error-dark: #FFB4AB;
-	--color-on-error-dark: #690005;
-	--color-error-container-dark: #93000A;
-	--color-on-error-container-dark: #FFDAD6;
-	--color-background-dark: #1A110F;
-	--color-on-background-dark: #F1DFDA;
-	--color-surface-dark: #1A110F;
-	--color-on-surface-dark: #F1DFDA;
-	--color-surface-variant-dark: #53433F;
-	--color-on-surface-variant-dark: #D8C2BB;
-	--color-outline-dark: #A08D87;
-	--color-outline-variant-dark: #53433F;
-	--color-scrim-dark: #000000;
-	--color-inverse-surface-dark: #F1DFDA;
-	--color-inverse-on-surface-dark: #392E2B;
-	--color-inverse-primary-dark: #8F4C35;
-	--color-surface-dim-dark: #1A110F;
-	--color-surface-bright-dark: #423733;
-	--color-surface-container-lowest-dark: #140C0A;
-	--color-surface-container-low-dark: #231917;
-	--color-surface-container-dark: #271D1B;
-	--color-surface-container-high-dark: #322825;
-	--color-surface-container-highest-dark: #3D322F;
+  --color-primary-light: #8f4c35;
+  --color-on-primary-light: #ffffff;
+  --color-primary-container-light: #ffdbd0;
+  --color-on-primary-container-light: #723520;
+  --color-secondary-light: #77574d;
+  --color-on-secondary-light: #ffffff;
+  --color-secondary-container-light: #ffdbd0;
+  --color-on-secondary-container-light: #5d4036;
+  --color-tertiary-light: #6a5e2f;
+  --color-on-tertiary-light: #ffffff;
+  --color-tertiary-container-light: #f3e2a7;
+  --color-on-tertiary-container-light: #51461a;
+  --color-error-light: #ba1a1a;
+  --color-on-error-light: #ffffff;
+  --color-error-container-light: #ffdad6;
+  --color-on-error-container-light: #93000a;
+  --color-background-light: #fff8f6;
+  --color-on-background-light: #231917;
+  --color-surface-light: #fff8f6;
+  --color-on-surface-light: #231917;
+  --color-surface-variant-light: #f5ded7;
+  --color-on-surface-variant-light: #53433f;
+  --color-outline-light: #85736e;
+  --color-outline-variant-light: #d8c2bb;
+  --color-scrim-light: #000000;
+  --color-inverse-surface-light: #392e2b;
+  --color-inverse-on-surface-light: #ffede8;
+  --color-inverse-primary-light: #ffb59d;
+  --color-surface-dim-light: #e8d6d1;
+  --color-surface-bright-light: #fff8f6;
+  --color-surface-container-lowest-light: #ffffff;
+  --color-surface-container-low-light: #fff1ed;
+  --color-surface-container-light: #fceae5;
+  --color-surface-container-high-light: #f7e4df;
+  --color-surface-container-highest-light: #f1dfda;
+  --color-primary-dark: #ffb59d;
+  --color-on-primary-dark: #55200c;
+  --color-primary-container-dark: #723520;
+  --color-on-primary-container-dark: #ffdbd0;
+  --color-secondary-dark: #e7bdb0;
+  --color-on-secondary-dark: #442a21;
+  --color-secondary-container-dark: #5d4036;
+  --color-on-secondary-container-dark: #ffdbd0;
+  --color-tertiary-dark: #d6c68d;
+  --color-on-tertiary-dark: #393005;
+  --color-tertiary-container-dark: #51461a;
+  --color-on-tertiary-container-dark: #f3e2a7;
+  --color-error-dark: #ffb4ab;
+  --color-on-error-dark: #690005;
+  --color-error-container-dark: #93000a;
+  --color-on-error-container-dark: #ffdad6;
+  --color-background-dark: #1a110f;
+  --color-on-background-dark: #f1dfda;
+  --color-surface-dark: #1a110f;
+  --color-on-surface-dark: #f1dfda;
+  --color-surface-variant-dark: #53433f;
+  --color-on-surface-variant-dark: #d8c2bb;
+  --color-outline-dark: #a08d87;
+  --color-outline-variant-dark: #53433f;
+  --color-scrim-dark: #000000;
+  --color-inverse-surface-dark: #f1dfda;
+  --color-inverse-on-surface-dark: #392e2b;
+  --color-inverse-primary-dark: #8f4c35;
+  --color-surface-dim-dark: #1a110f;
+  --color-surface-bright-dark: #423733;
+  --color-surface-container-lowest-dark: #140c0a;
+  --color-surface-container-low-dark: #231917;
+  --color-surface-container-dark: #271d1b;
+  --color-surface-container-high-dark: #322825;
+  --color-surface-container-highest-dark: #3d322f;
 }

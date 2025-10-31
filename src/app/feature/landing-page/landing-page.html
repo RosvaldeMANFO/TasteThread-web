@@ -1,16 +1,22 @@
-<div
-    class="min-h-screen flex items-center justify-center bg-surface-light px-4 py-8 w-screen">
-    <div class="flex md:flex-row flex-col-reverse md:items-stretch md:gap-30 gap-7">
+<div class="min-h-screen flex items-center justify-center bg-surface-light px-4 py-8 w-screen">
+    <div class="flex md:flex-row flex-col-reverse md:items-stretch gap-7">
         <div class="flex flex-col items-center justify-center md:items-start text-center md:text-left max-w-md">
-
-            <h1 class="md:visible invisible text-4xl font-bold text-primary-light mb-2 animate-fade-in ">Cook</h1>
-            <p class="text-lg text-on-background-light mb-6 animate-fade-in">
-                Welcome to Cook, the social app where food lovers connect!<br>
+            <div class="hidden md:flex md:visible items-center justify-start gap-4 mb-4">
+                <img src="assets/logo.png" alt="App Logo" class="h-24 mb-4 animate-fade-in" />
+                <h1 class="text-4xl font-bold text-primary-light mb-2 animate-fade-in ">{{ appName
+                    }}
+                </h1>
+            </div>
+            <p class="text-lg text-on-background-light mb-4 animate-fade-in">
+                Welcome to {{ appName }}, the social app where food lovers connect!<br>
                 Share your favorite recipes and discover new ones from the community.
                 Like and comment on dishes to inspire and encourage others.
                 Save the recipes you love to your personal collection.<br>
                 Join us and turn every meal into a shared experience.
             </p>
+            <span class="text-primary-light mb-6 animate-fade-in font-bold">
+                Save it. Share it. Savor it.
+            </span>
 
             <div class="flex flex-col sm:flex-row gap-4 mb-8 animate-fade-in">
                 <a href="#"
@@ -18,26 +24,24 @@
                     <span class="material-icons text-on-primary-light text-3xl">android</span>
                     <span class="ml-2 text-on-primary-light font-medium">Google Play</span>
                 </a>
-                <a href="#"
-                    class="flex items-center justify-center w-32 h-12 bg-primary-light rounded-lg shadow hover:bg-primary-container-light transition">
-                    <span class="material-icons text-on-primary-light text-3xl">apple</span>
-                    <span class="ml-2 text-on-primary-light font-medium">App Store</span>
-                </a>
             </div>
 
-            <footer class="text-sm text-outline-light text-center animate-fade-in">
-                &copy; 2025 Cook. All rights reserved.
+            <footer class="text-sm text-primary-light text-center animate-fade-in">
+                &copy; 2025 TasteThread. All rights reserved.
             </footer>
         </div>
 
-        <!-- Mockup Placeholder -->
         <div class="flex flex-col-reverse items-center justify-center">
-            <div
-                class="w-64 h-128 max-w-md bg-primary-light rounded-2xl shadow-lg flex items-center justify-center animate-fade-in">
-                <span class="text-on-primary-light text-xl font-semibold">App Mockup Here</span>
+            <div class="w-64 h-2/3 max-w-md animate-fade-in">
+                <img src="assets/mockup.png" alt="App Mockup" class="w-full h-full object-cover block" />
             </div>
 
-            <h1 class="sm:invisible text-4xl font-bold text-primary-light mb-2 animate-fade-in">Cook</h1>
+            <div class="flex md:hidden flex-col items-center justify-center gap-4 mb-4">
+                <img src="assets/logo.png" alt="App Logo" class="h-24 mb-4 animate-fade-in" />
+                <h1 class="text-4xl font-bold text-primary-light mb-2 animate-fade-in ">
+                    {{ appName }}
+                </h1>
+            </div>
         </div>
     </div>
 </div>

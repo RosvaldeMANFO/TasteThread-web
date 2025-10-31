@@ -1,0 +1,56 @@
+<div class="h-screen overflow-hidden">
+    <mat-toolbar color="primary" class="!bg-surface-light !shadow-md 
+    !text-on-surface-light sticky top-0 z-10">
+        <div class="w-full flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <img src="assets/logo.png" alt="App Logo" class="h-8" />
+                <h1>{{ state.appName }}</h1>
+            </div>
+            <button (click)="logout()" mat-icon-button>
+                <mat-icon>logout</mat-icon>
+            </button>
+        </div>
+    </mat-toolbar>
+    <div class="p-4 flex flex-col gap-7 h-full overflow-x-hidden" style="scrollbar-gutter: stable both-edges;">
+        <app-header [stats]="state.stats" [isLoading]="state.isLoading"></app-header>
+        <div class="flex flex-wrap w-full flex-1 min-h-0 gap-4">
+            <div class="flex-2 min-w-sm flex flex-col gap-4 min-h-0">
+                <h3 class="text-primary-light font-bold">Recipe List</h3>
+                <div class="card shadow-md w-full rounded-md p-2 flex-1 min-h-0 overflow-hidden">
+                    <app-recipe-list [state]="state.recipeListState" (loadMore)="loadMoreRecipes()"
+                        (search)="searchRecipes($event)" (loadMoreSearches)="loadMoreSearchResults()"
+                        (refresh)="refreshRecipes()" (reveal)="revealRecipe($event)" (edit)="editRecipe($event)"
+                        (delete)="deleteRecipe($event)" (toggleUnapprovedFilter)="togglePendingFilter($event)"
+                        (create)="createRecipe()"></app-recipe-list>
+                </div>
+            </div>
+            <div class="flex-1 min-w-sm md:h-full h-auto md:border-l transition-transform duration-300 flex flex-col overflow-hidden"
+                [class.translate-x-0]="state.recipeListState.selectedFeed"
+                [class.translate-x-full]="!state.recipeListState.selectedFeed">
+                @if(state.recipeListState.selectedFeed) {
+                <div class="p-6 flex-shrink-0">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-bold">
+                            {{ state.recipeListState.selectedFeed.recipe.name }}
+                        </h2>
+                        <div class="flex gap-2">
+                            @if(!state.recipeListState.selectedFeed.recipe.approved) {
+                            <app-custom-button icon="check" variant="primary" (click)="approveRecipe()">
+                                Approve
+                            </app-custom-button>
+                            }
+                            <button mat-icon-button class="text-primary-light" (click)="closeFeedDetail()">
+                                <mat-icon>close</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex-1 overflow-y-auto px-6 min-h-0" style="scrollbar-gutter: stable both-edges;">
+                    <app-feed-details [feed]="state.recipeListState.selectedFeed"></app-feed-details>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

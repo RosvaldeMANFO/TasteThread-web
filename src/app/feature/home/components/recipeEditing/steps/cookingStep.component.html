@@ -1,0 +1,23 @@
+<form class="grid gap-4">
+  <div class="grid gap-3">
+    @for(ctrl of items.controls; track ctrl; let i = $index) {
+    <div class="flex gap-4 items-center">
+      <mat-form-field class="flex-1" appearance="fill">
+        <mat-label>Step {{ i + 1 }}</mat-label>
+        <textarea matInput [formControl]="ctrl">
+        </textarea>
+      </mat-form-field>
+      <button mat-icon-button class="col-span-1 !text-red-400 mt-2" type="button" aria-label="Remove"
+        (click)="remove.emit(i)">
+        <mat-icon>delete</mat-icon>
+      </button>
+    </div>
+    }
+  </div>
+
+  <div class="flex justify-end">
+    <app-custom-button icon="add" variant="secondary" buttonType="button" (clicked)="add.emit()">
+      Add step
+    </app-custom-button>
+  </div>
+</form>
