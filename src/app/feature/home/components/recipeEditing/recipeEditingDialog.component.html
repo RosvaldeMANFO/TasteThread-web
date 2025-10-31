@@ -1,0 +1,71 @@
+<h2 mat-dialog-title class="!text-lg !font-bold">
+  {{data.title}}
+</h2>
+
+<mat-dialog-content class="block max-h-[75vh] overflow-y-auto">
+  <mat-horizontal-stepper #stepper [linear]="true" class="w-full">
+    <mat-step [stepControl]="descriptionForm" label="Description">
+      <app-description-step [form]="descriptionForm"></app-description-step>
+      <div class="mt-4 flex justify-end gap-2">
+        <app-custom-button icon="arrow_forward" variant="primary" [disabled]="descriptionForm.invalid"
+          (clicked)="stepper.next()">
+          Next
+        </app-custom-button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="additionalForm" label="Additional info">
+      <app-additional-info-step [form]="additionalForm"></app-additional-info-step>
+      <div class="mt-4 flex justify-between">
+        <app-custom-button icon="arrow_back" variant="secondary" (clicked)="stepper.previous()">
+          Back
+        </app-custom-button>
+        <app-custom-button icon="arrow_forward" variant="primary" (clicked)="stepper.next()">
+          Next
+        </app-custom-button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="ingredientsForm" label="Ingredients">
+      <app-ingredients-step [items]="items" (add)="addIngredient()"
+        (remove)="removeIngredient($event)"></app-ingredients-step>
+      <div class="mt-4 flex justify-between">
+        <app-custom-button icon="arrow_back" variant="secondary" (clicked)="stepper.previous()">
+          Back
+        </app-custom-button>
+        <app-custom-button icon="arrow_forward" variant="primary" (clicked)="stepper.next()">
+          Next
+        </app-custom-button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="stepsForm" label="Steps">
+      <app-cooking-step [items]="stepItems" (add)="addStep()" (remove)="removeStep($event)"></app-cooking-step>
+      <div class="mt-4 flex justify-between">
+        <app-custom-button icon="arrow_back" variant="secondary" (clicked)="stepper.previous()">
+          Back
+        </app-custom-button>
+        <app-custom-button icon="arrow_forward" variant="primary" (clicked)="stepper.next()">
+          Next
+        </app-custom-button>
+      </div>
+    </mat-step>
+
+    <mat-step [stepControl]="photoForm" label="Photo">
+      <app-photo-step [preview]="photoPreview" (photoChange)="onPhotoSelected($event.file, $event.preview)">
+      </app-photo-step>
+      <div class="mt-4 flex justify-between">
+        <app-custom-button icon="arrow_back" variant="secondary" (clicked)="stepper.previous()">
+          Back
+        </app-custom-button>
+        <app-custom-button icon="save" variant="primary" (clicked)="save()">
+          Save
+        </app-custom-button>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end" class="sticky bottom-0 bg-primary-container-light py-3 border-t mt-2">
+  <button mat-button (click)="close()">Close</button>
+</mat-dialog-actions>

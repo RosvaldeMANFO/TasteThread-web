@@ -1,0 +1,153 @@
+import { HttpClient } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { StatsModel } from "../../core/model/admin/stats.model";
+import { RequestResult } from "../../core/model/requestResult.model";
+import { environment } from "../../../environments/environment";
+import { RecipeModel } from "../../core/model/recipe/recipe.model";
+import { FilterDTO } from "./model/fileter.dto";
+import { RecipeDTO } from "../../core/model/recipe/recipe.dto";
+import { dataUrlToBlob } from "../../utils/file.utils";
+import { map } from "rxjs";
+
+@Injectable({ providedIn: 'root' })
+export class HomeService {
+
+    constructor(private http: HttpClient) { }
+
+    getStats() {
+        return this.http.get<RequestResult<StatsModel>>(
+            `${environment.apiUrl}/admin/stats`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }
+        );
+    }
+
+    getRecipes(offset: number, pendingOnly: boolean) {
+        return this.http.get<RequestResult<RecipeModel[]>>(
+            `${environment.apiUrl}/admin/recipes`,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                params: {
+                    offset: offset.toString(),
+                    limit: "20",
+                    pending: pendingOnly
+                }
+            }
+        ).pipe(
+            map(response => {
+                return this.mapRecipe(response);
+            })
+        );
+    }
+
+    private mapRecipe(response: RequestResult<RecipeModel[]>) {
+        let userEmail = localStorage.getItem('userEmail');
+        if (response.data) {
+            return {
+                ...response,
+                data: response.data.map(recipe => {
+                    recipe.canEdit = recipe.author.email === userEmail;
+                    return recipe;
+                })
+            };
+        }
+        return response;
+    }
+
+
+    searchRecipes(term: string, offset: number, pendingOnly: boolean) {
+        const filter: FilterDTO = {
+            query: term,
+            origin: term,
+            mealType: term,
+            dietaryRestrictions: [term],
+            cookTime: parseInt(term) || undefined
+        };
+        return this.http.post<RequestResult<RecipeModel[]>>(
+            `${environment.apiUrl}/admin/search`,
+            filter,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                params: {
+                    offset: offset.toString(),
+                    limit: "20",
+                    pending: pendingOnly
+                }
+            }
+        ).pipe(
+            map(response => {
+                return this.mapRecipe(response);
+            })
+        );
+    }
+
+    createRecipe(recipe: RecipeDTO) {
+        if (recipe.image) {
+            const form = this.buildMultipartFormData(recipe);
+            return this.http.post<RequestResult<RecipeModel>>(
+                `${environment.apiUrl}/recipes`,
+                form,
+            );
+        }
+
+        return this.http.post<RequestResult<RecipeModel>>(
+            `${environment.apiUrl}/recipes`,
+            recipe,
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+    }
+
+    updateRecipe(recipe: RecipeDTO) {
+        if (recipe.image) {
+            const form = this.buildMultipartFormData(recipe);
+            return this.http.put<RequestResult<RecipeModel>>(
+                `${environment.apiUrl}/recipes/${recipe.feedId}`,
+                form,
+            );
+        }
+        return this.http.put<RequestResult<RecipeModel>>(
+            `${environment.apiUrl}/recipes/${recipe.feedId}`,
+            recipe,
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+    }
+
+    private buildMultipartFormData(recipe: RecipeDTO): FormData {
+        const form = new FormData();
+        const { image, ...rest } = recipe as any;
+        form.append('recipe', JSON.stringify(rest));
+        const imageBlob = dataUrlToBlob(recipe.image || '');
+        form.append('image', imageBlob, 'image.jpg');
+        return form;
+    }
+
+    approveRecipe(recipeId: string) {
+        return this.http.post<RequestResult<void>>(
+            `${environment.apiUrl}/admin/approve/${recipeId}`,
+            {},
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+    }
+
+    deleteRecipe(recipeId: string) {
+        return this.http.delete<RequestResult<void>>(
+            `${environment.apiUrl}/recipes/${recipeId}`,
+            {
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
+    }
+}

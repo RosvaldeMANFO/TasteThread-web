@@ -1,5 +1,5 @@
 export type AuthenticationState = {
-  user: {
+  credential: {
     email: string;
     password: string;
   };
