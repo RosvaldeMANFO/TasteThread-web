@@ -7,13 +7,22 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { CustomButtonComponent } from '../../utils/components/custom-button/custom-button';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { AuthService } from '../../core/services/auth.service';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { Spinner } from '../../utils/components/spinner/spinner';
 
 
 @Component({
   selector: 'app-reset-password',
-  imports: [CommonModule, FormsModule, MatIconModule, CustomButtonComponent,
-    MatFormFieldModule
+  imports: [
+    CommonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    FormsModule,
+    CustomButtonComponent,
+    Spinner
   ],
   templateUrl: './reset-password.html',
 })
@@ -50,7 +59,10 @@ export class ResetPassword implements OnInit {
       this.state.message = 'Passwords do not match.';
       return;
     }
-    this.state.loading = true;
+    this.state = {
+      ...this.state,
+      loading: true,
+    };
     this.service.resetPassword(this.state.token, this.state.newPassword).subscribe({
       next: (result) => {
         this.state = {
@@ -61,12 +73,11 @@ export class ResetPassword implements OnInit {
           success: true
         };
       },
-      error: (result) => {
-        console.log(result);
+      error: (error) => {
         this.state = {
           ...this.state,
           loading: false,
-          message: result.error?.message,
+          message: error.message,
           success: false
         };
       }

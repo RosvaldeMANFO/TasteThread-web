@@ -21,9 +21,17 @@ export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
   private tokenSubject = new BehaviorSubject<Token | null>(null);
 
+  private isPublic(url: string): boolean {
+    return url.includes('users') ||
+      url.includes('auth');
+  }
+
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const token = this.auth.getToken();
     let authReq = req;
+    if (this.isPublic(req.url)) {
+      return next.handle(req);
+    }
     if (token) {
       authReq = req.clone({ setHeaders: { Authorization: `Bearer ${token.accessToken}` } });
     } else {

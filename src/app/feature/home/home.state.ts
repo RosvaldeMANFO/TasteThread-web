@@ -7,5 +7,5 @@ export class HomeState {
     stats?: StatsModel
     recipeListState: RecipeListState = new RecipeListState();
     error?: string
-    appName: string = 'Cook';
+    appName: string = 'TasteThread';
 }

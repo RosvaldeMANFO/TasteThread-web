@@ -34,5 +34,9 @@ export const routes: Routes = [
     {
         path: 'reset-password',
         component: ResetPassword
+    },
+    {
+        path: '**',
+        redirectTo: 'landing'
     }
 ];

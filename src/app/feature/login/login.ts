@@ -10,19 +10,21 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomButtonComponent } from '../../utils/components/custom-button/custom-button';
 import { AuthService } from '../../core/services/auth.service';
+import { Spinner } from "../../utils/components/spinner/spinner";
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    CommonModule, 
-    MatIconModule, 
+    CommonModule,
+    MatIconModule,
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule,
-    FormsModule, 
-    CustomButtonComponent
-  ],
+    FormsModule,
+    CustomButtonComponent,
+    Spinner
+],
   templateUrl: './login.html',
 })
 export class Login implements OnInit {
@@ -47,8 +49,11 @@ export class Login implements OnInit {
     if (isPlatformBrowser(this.platformId)) {
       const credential = this.auth.getCredential();
       if (credential) {
-        this.state.credential = credential;
-        this.state.rememberMe = true;
+        this.state = { 
+          ...this.state,
+          rememberMe: true,
+          credential: credential
+        };
       }
     }
   }
