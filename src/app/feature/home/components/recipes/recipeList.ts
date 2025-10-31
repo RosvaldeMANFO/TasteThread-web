@@ -13,6 +13,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { CustomButtonComponent } from "../../../../utils/components/custom-button/custom-button";
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { Spinner } from "../../../../utils/components/spinner/spinner";
 
 
 
@@ -21,7 +22,7 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
   standalone: true,
   imports: [MatTableModule, MatPaginatorModule, MatProgressSpinnerModule,
     MatIconModule, MatButtonModule, MatFormFieldModule, MatInputModule,
-    CommonModule, MatButtonToggleModule],
+    CommonModule, MatButtonToggleModule, Spinner],
   templateUrl: './recipeList.html',
 })
 export class RecipeList implements AfterViewInit {
