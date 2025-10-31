@@ -225,6 +225,7 @@ export class Home implements OnInit {
         .subscribe({
           next: _ => {
             this.refreshRecipes();
+            this.loadStatsData();
           },
           error: (err) => { console.error('Error creating recipe:', err); }
         });
@@ -280,6 +281,7 @@ export class Home implements OnInit {
         if (recipeId === this.state.recipeListState.selectedFeed?.recipe.id) {
           this.closeFeedDetail();
         }
+        this.loadStatsData();
       },
       error: (err) => {
         console.error('Error deleting recipe:', err);

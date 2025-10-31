@@ -1,23 +1,26 @@
 <div>
     @if(!isLoading && stats) {
-        <div class="flex gap-6 flex-wrap">
-            <div class="p-4 bg-primary-container-light text-on-primary-container-light rounded-lg shadow-md flex-1 text-center">
-                <h3 class="text-lg font-semibold">Users</h3>
-                <p class="text-2xl font-bold">{{ stats.userCount }}</p>
-            </div>
-            <div class="p-4 bg-primary-container-light text-on-primary-container-light rounded-lg shadow-md flex-1 text-center">
-                <h3 class="text-lg font-semibold">Recipes</h3>
-                <p class="text-2xl font-bold">{{ stats.recipeCount }}</p>
-            </div>
-            <div class="p-4 bg-primary-container-light text-on-primary-container-light rounded-lg shadow-md flex-1 text-center">
-                <h3 class="text-lg font-semibold">Pending Recipes</h3>
-                <p class="text-2xl font-bold">{{ stats.pendingRecipeCount }}</p>
-            </div>
+    <div class="flex gap-6 flex-wrap">
+        <div
+            class="p-4 bg-primary-container-light text-on-primary-container-light rounded-lg shadow-md flex-1 text-center">
+            <h3 class="text-lg font-semibold">Users</h3>
+            <p class="text-2xl font-bold">{{ stats.userCount }}</p>
         </div>
+        <div
+            class="p-4 bg-primary-container-light text-on-primary-container-light rounded-lg shadow-md flex-1 text-center">
+            <h3 class="text-lg font-semibold">Recipes</h3>
+            <p class="text-2xl font-bold">{{ stats.recipeCount }}</p>
+        </div>
+        <div
+            class="p-4 bg-primary-container-light text-on-primary-container-light rounded-lg shadow-md flex-1 text-center">
+            <h3 class="text-lg font-semibold">Pending Recipes</h3>
+            <p class="text-2xl font-bold">{{ stats.pendingRecipeCount }}</p>
+        </div>
+    </div>
     } @else {
-        <div class="p-4 text-on-primary-container-light rounded-lg shadow-md text-center">
-            <mat-spinner></mat-spinner>
-            <p>Loading statistics...</p>
-        </div>
+    <div class="p-4 text-on-primary-container-light rounded-lg shadow-md text-center">
+        <app-spinner class="h-8" [customClass]="'fill-on-primary-light'"></app-spinner>
+        <p>Loading statistics...</p>
+    </div>
     }
 </div>
