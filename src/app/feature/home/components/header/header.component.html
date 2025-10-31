@@ -1,4 +1,4 @@
-<div class="relative min-h-screen/4">
+<div class="min-h-1/4">
     @if(!isLoading && stats) {
     <div class="flex gap-6 flex-wrap">
         <div
@@ -18,7 +18,7 @@
         </div>
     </div>
     } @else {
-    <div class="absolute top-0 left-0 right-0 bottom-0 p-4 text-on-primary-container-light 
+    <div class="p-4 text-on-primary-container-light 
             rounded-lg shadow-md text-center flex flex-col items-center justify-center">
         <app-spinner class="h-8" [customClass]="'fill-on-primary-light'"></app-spinner>
         <p>Loading statistics...</p>
