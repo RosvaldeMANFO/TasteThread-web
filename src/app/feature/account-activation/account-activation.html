@@ -1,14 +1,18 @@
-<div class="min-h-screen flex items-center justify-center bg-background-light">
+<div class="min-h-screen flex flex-col gap-3 items-center justify-center bg-background-light">
+    <div class="flex items-center justify-center bg-surface-light rounded-xl shadow-md w-32 h-32">
+        <img src="assets/logo.png" alt="App Logo" class="max-w-full max-h-full object-contain" />
+    </div>
+    <h1 class="text-primary-light font-bold">{{ state.appName }}</h1>
     <div class="w-full max-w-sm bg-surface-light rounded-xl shadow-lg p-8 flex flex-col items-center animate-fade-in">
         @if (state.success) {
-            <mat-icon class="!text-primary-light text-4xl mb-2">check_circle</mat-icon>
-            <h2 class="text-xl font-bold mb-2 text-primary-light">Success</h2>
-            <p class="text-base text-on-surface-light">{{ state.message }}</p>
+        <mat-icon class="!text-primary-light text-4xl mb-2">check_circle</mat-icon>
+        <h2 class="text-xl font-bold mb-2 text-primary-light">Success</h2>
+        <p class="text-base text-on-surface-light">{{ state.message }}</p>
         }
         @else {
-            <mat-icon class="!text-error-light text-4xl mb-2">cancel</mat-icon>
-            <h2 class="text-xl font-bold mb-2 text-error-light">Failure</h2>
-            <p class="text-base text-on-error-container-light">{{ state.message }}</p>
+        <mat-icon class="!text-error-light text-4xl mb-2">cancel</mat-icon>
+        <h2 class="text-xl font-bold mb-2 text-error-light">Failure</h2>
+        <p class="text-base text-on-error-container-light">{{ state.message }}</p>
         }
     </div>
 </div>

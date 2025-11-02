@@ -38,5 +38,8 @@ testem.log
 /typings
 
 # System files
-.DS_Store
+.DS_Store²
 Thumbs.db
+
+# Environment files
+/src/environments/development.ts

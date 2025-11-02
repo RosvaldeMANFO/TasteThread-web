@@ -17,10 +17,7 @@ export class AccountActivation implements OnInit {
     private activationService: AccountActivationService
   ) {}
 
-  state: ActivationState = {
-    success: false,
-    message: ''
-  };
+  state: ActivationState = new ActivationState();
 
   ngOnInit() {
     const token = this.route.snapshot.queryParamMap.get('token');
@@ -28,12 +25,14 @@ export class AccountActivation implements OnInit {
       this.activationService.activateAccount(token).subscribe({
         next: () => {
           this.state = {
+            ...this.state,
             success: true,
             message: 'Account activated successfully!'
           };
         },
         error: (err) => {
           this.state = {
+            ...this.state,
             success: false,
             message: err.error?.message
           };

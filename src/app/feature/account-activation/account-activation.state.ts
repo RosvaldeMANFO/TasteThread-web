@@ -1,4 +1,7 @@
-export type ActivationState = {
-    success: boolean;
-    message: string;
+import { environment } from "../../../environments/environment";
+
+export class ActivationState {
+    success: boolean = false;
+    message: string = "";
+    appName?: string = environment.app.name;
 }
