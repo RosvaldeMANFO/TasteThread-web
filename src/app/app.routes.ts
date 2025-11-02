@@ -6,6 +6,7 @@ import { LandingPage } from './feature/landing-page/landing-page';
 import { ResetPassword } from './feature/reset-password/reset-password';
 import { authGuard } from './core/guards/auth-guard';
 import { Home } from './feature/home/home';
+import { Privacy } from './feature/privacy/privacy';
 
 export const routes: Routes = [
     {
@@ -34,6 +35,10 @@ export const routes: Routes = [
     {
         path: 'reset-password',
         component: ResetPassword
+    },
+    {
+        path: 'privacy-policy',
+        component: Privacy
     },
     {
         path: '**',
