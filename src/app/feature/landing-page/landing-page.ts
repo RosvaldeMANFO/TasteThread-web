@@ -8,4 +8,6 @@ import { environment } from '../../../environments/environment';
 })
 export class LandingPage {
   appName: string = environment.app.name;
+  appTagline: string = environment.app.tagline;
+  playStoreUrl: string = environment.app.playStoreUrl;
 }
