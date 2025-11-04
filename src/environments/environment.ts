@@ -6,6 +6,7 @@ export const environment = {
         version: '',
         description: '',
         tagline: '',
+        playStoreUrl: '',
     },
     contact: {
         email: '',
