@@ -144,7 +144,7 @@ export class HomeService {
 
     deleteRecipe(recipeId: string) {
         return this.http.delete<RequestResult<void>>(
-            `${environment.apiUrl}/recipes/${recipeId}`,
+            `${environment.apiUrl}/admin/recipe/${recipeId}`,
             {
                 headers: { 'Content-Type': 'application/json' },
             }
