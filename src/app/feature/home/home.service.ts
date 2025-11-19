@@ -40,6 +40,7 @@ export class HomeService {
             }
         ).pipe(
             map(response => {
+                console.log(this.mapRecipe(response));
                 return this.mapRecipe(response);
             })
         );
